@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--
 ==============================================================================
-  RESTAURANTE DEUS É FIEL — PÁGINA DELÍCIAS — URL: /delicias/
+  RESTAURANTE E HOTEL DEUS É FIEL — PÁGINA DELÍCIAS — URL: /delicias/
   Site estático: cada página é uma pasta com um index.html. Arquivos compartilhados:
     assets/css/style.css .... todos os estilos ([CSS-01..25])
     assets/js/main.js ....... menu, progresso, animações, abas do cardápio ([JS-01..05])
-    assets/img/ ............. fotos do banner e do salão
+    assets/img/ ............. fotos, logo, imagem de compartilhamento e favicon
   Estrutura deste arquivo: [HEAD] informações da página (título, descrição, canonical)
     [HTML-01..04] barra de progresso, barra superior, menu lateral (iguais em todas as páginas)
     [PAG-3] conteúdo desta página · [HTML-05..06] rodapé e botão flutuante do WhatsApp
@@ -22,13 +22,32 @@
 <!-- Cor da barra do navegador no celular. -->
 <meta name="theme-color" content="#1c0f09">
 <!-- Título da aba do navegador e do resultado no Google (exclusivo desta página). -->
-<title>Delícias da Casa | Restaurante Deus é Fiel em Caetés - PE</title>
+<title>Delícias da Casa | Restaurante e Hotel Deus é Fiel</title>
 <!-- Texto que aparece no Google embaixo do título (exclusivo desta página, ideal até ~160 caracteres). -->
-<meta name="description" content="Conheça as delícias e especialidades do Restaurante Deus é Fiel, em Caetés - PE: pratos preparados com cuidado para todos os momentos.">
+<meta name="description" content="Conheça opções do cardápio do Restaurante e Hotel Deus é Fiel, em Caetés - PE: almoço, jantar, café da manhã e pizzas, com descrição e preço.">
 <!-- Endereço oficial desta página (absoluto): evita que o Google trate variações da URL como páginas diferentes. -->
 <link rel="canonical" href="https://restaurante-deus-fiel.vercel.app/delicias/">
 <!-- Permite que o Google indexe a página e siga os links dela. -->
 <meta name="robots" content="index, follow">
+<!-- Compartilhamento (WhatsApp, Facebook, X/Twitter...): título, descrição, endereço e imagem desta página. Imagem 1200x630 com a logo. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Restaurante e Hotel Deus é Fiel">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Delícias da Casa | Restaurante e Hotel Deus é Fiel">
+<meta property="og:description" content="Conheça opções do cardápio do Restaurante e Hotel Deus é Fiel, em Caetés - PE: almoço, jantar, café da manhã e pizzas, com descrição e preço.">
+<meta property="og:url" content="https://restaurante-deus-fiel.vercel.app/delicias/">
+<meta property="og:image" content="https://restaurante-deus-fiel.vercel.app/assets/img/og-restaurante-e-hotel-deus-e-fiel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo do Restaurante e Hotel Deus é Fiel, com um chef segurando uma cloche">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Delícias da Casa | Restaurante e Hotel Deus é Fiel">
+<meta name="twitter:description" content="Conheça opções do cardápio do Restaurante e Hotel Deus é Fiel, em Caetés - PE: almoço, jantar, café da manhã e pizzas, com descrição e preço.">
+<meta name="twitter:image" content="https://restaurante-deus-fiel.vercel.app/assets/img/og-restaurante-e-hotel-deus-e-fiel.jpg">
+<!-- Ícone do site (favicon) nas abas do navegador, no Google e na tela inicial do celular. Arquivos: favicon.ico e apple-touch-icon.png na raiz; favicon-192.png em assets/img/. -->
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- Avisa ao CSS que o JavaScript está ativo (troca "no-js-fallback" por "js"). Sem JS, o conteúdo aparece normalmente. -->
 <script>document.documentElement.className='js';</script>
 <!-- Acelera o carregamento das fontes do Google (as duas linhas abaixo). -->
@@ -53,7 +72,7 @@
   <!-- Logo: leva para a página inicial (/) -->
   <a href="/" class="brand">
     <span class="brand-top">Deus é Fiel</span>
-    <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+    <span class="brand-bottom">RESTAURANTE E HOTEL</span>
   </a>
   <!-- Botão do WhatsApp (reserva) -->
   <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="icon-btn whats-topbar" aria-label="Reservar pelo WhatsApp">
@@ -70,7 +89,7 @@
   <div class="sidebar-head">
     <a href="/" class="brand">
       <span class="brand-top">Deus é Fiel</span>
-      <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+      <span class="brand-bottom">RESTAURANTE E HOTEL</span>
     </a>
     <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">×</button>
   </div>
@@ -80,6 +99,7 @@
       <a href="/sobre/">Sobre</a>
       <a href="/delicias/" class="is-active" aria-current="page">Delícias</a>
       <a href="/cardapio/">Cardápio</a>
+      <a href="/hospedagem/">Hospedagem</a>
       <a href="/depoimentos/">Depoimentos</a>
       <a href="/localizacao/">Localização</a>
       <a href="/faq/">Dúvidas</a>
@@ -128,7 +148,7 @@
       <!-- Cartão: Pratos preparados com cuidado (sem ícone) -->
       <div class="card reveal">
         <h3>Pratos preparados com cuidado</h3>
-        <p>Ingredientes selecionados, preparo cuidadoso e atenção aos detalhes.</p>
+        <p>Do café da manhã ao jantar, buscamos unir sabor, qualidade e cuidado em cada prato.</p>
       </div>
       <!-- Cartão: Para todos os momentos -->
       <div class="card reveal">
@@ -144,52 +164,53 @@
   </div>
 </section>
 
-<!-- [PAG-3.3] MAIS PEDIDOS (fundo claro)
-     ATENÇÃO: os 4 pratos abaixo e seus preços são EXEMPLOS do site original e NÃO estão no cardápio real ([PAG-4]).
-     Troque pelos pratos mais pedidos de verdade. Cada prato é um bloco <div class="dish reveal">. -->
+<!-- [PAG-3.3] ALGUMAS OPÇÕES DO CARDÁPIO (fundo claro)
+     Os 4 pratos abaixo são copiados do cardápio real ([PAG-4]): nome, descrição e preço devem ser idênticos aos de lá.
+     A etiqueta é a categoria do prato. Cada prato é um bloco <div class="dish reveal">. -->
 <section class="section--light section-pad">
   <div class="container">
-    <span class="eyebrow reveal">Os favoritos da casa</span>
-    <h2 class="reveal">Mais Pedidos</h2>
-    <p class="lead reveal" style="color:var(--ink-soft); max-width:60ch; margin-top:16px;">Os pratos que mais saem da nossa cozinha e que costumam virar pedido certo na próxima visita.</p>
+    <span class="eyebrow reveal">Do nosso cardápio</span>
+    <h2 class="reveal">Algumas opções para você</h2>
+    <p class="lead reveal" style="color:var(--ink-soft); max-width:60ch; margin-top:16px;">Opções que você encontra no cardápio, do café da manhã ao jantar, além de pizzas.</p>
 
     <div class="grid-4">
-      <!-- Prato de exemplo: Costela no bafo -->
+      <!-- Prato do cardápio: Carne de Sol (Almoço) -->
       <div class="dish reveal">
         <div style="flex:1">
-          <span class="tag-favorito">Mais pedido</span>
-          <div class="dish-name"><h3>Costela no bafo</h3><span class="price">R$ 68</span></div>
-          <p>Cozida lentamente até soltar do osso, servida com farofa de banana e vinagrete.</p>
+          <span class="tag-favorito">Almoço</span>
+          <div class="dish-name"><h3>Carne de Sol</h3><span class="price">R$ 40,00</span></div>
+          <p>Carne de sol acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p>
         </div>
       </div>
-      <!-- Prato de exemplo: Baião de dois com carne de sol -->
+      <!-- Prato do cardápio: Moda da Casa G (Pizza) -->
       <div class="dish reveal">
         <div style="flex:1">
-          <span class="tag-favorito">Clássico nordestino</span>
-          <div class="dish-name"><h3>Baião de dois com carne de sol</h3><span class="price">R$ 52</span></div>
-          <p>Arroz e feijão-de-corda cremosos, queijo coalho e carne de sol na brasa.</p>
+          <span class="tag-favorito">Pizza</span>
+          <div class="dish-name"><h3>Moda da Casa G</h3><span class="price">R$ 39,99</span></div>
+          <p>Frango, mussarela e bacon.</p>
         </div>
       </div>
-      <!-- Prato de exemplo: Galinha caipira ao molho pardo -->
+      <!-- Prato do cardápio: Tapioca com Carne ou Frango (Café da manhã) -->
       <div class="dish reveal">
         <div style="flex:1">
-          <span class="tag-favorito">Comida de família</span>
-          <div class="dish-name"><h3>Galinha caipira ao molho pardo</h3><span class="price">R$ 58</span></div>
-          <p>Receita de panela, acompanhada de arroz branco, pirão e batata frita.</p>
+          <span class="tag-favorito">Café da manhã</span>
+          <div class="dish-name"><h3>Tapioca com Carne ou Frango</h3><span class="price">R$ 10,00</span></div>
+          <p>Tapioca recheada com carne ou frango.</p>
         </div>
       </div>
-      <!-- Prato de exemplo: Bolo de rolo -->
+      <!-- Prato do cardápio: Picanha (Jantar) -->
       <div class="dish reveal">
         <div style="flex:1">
-          <span class="tag-favorito">Doce da casa</span>
-          <div class="dish-name"><h3>Bolo de rolo</h3><span class="price">R$ 16</span></div>
-          <p>A sobremesa símbolo de Pernambuco, feita com massa fina e goiabada.</p>
+          <span class="tag-favorito">Jantar</span>
+          <div class="dish-name"><h3>Picanha</h3><span class="price">R$ 70,00</span></div>
+          <p>Porção de picanha.</p>
         </div>
       </div>
     </div>
 
     <div class="btn-row reveal" style="margin-top:44px;">
       <a href="/cardapio/" class="btn btn--primary">Ver cardápio completo</a>
+      <a href="/hospedagem/" class="btn btn--ghost on-light">Conhecer a hospedagem</a>
     </div>
   </div>
 </section>
@@ -202,9 +223,9 @@
   <div class="container foot-top">
     <!-- Coluna: marca e texto de apresentação -->
     <div class="foot-brand">
-      <span class="brand-top" style="font-size:1.4rem;">Restaurante Deus é Fiel</span>
+      <span class="brand-top" style="font-size:1.4rem;">Restaurante e Hotel Deus é Fiel</span>
       <p><strong style="color:var(--cream);">Boa comida. Bons momentos. Em Caetés.</strong></p>
-      <p>O Restaurante Deus é Fiel é uma opção para quem procura um lugar para comer em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
+      <p>O Restaurante e Hotel Deus é Fiel é uma opção para quem procura um lugar para comer ou se hospedar em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
     </div>
     <!-- Coluna: Contato -->
     <div class="foot-col">
@@ -233,7 +254,7 @@
   </div>
   <!-- Linha final do rodapé: direitos reservados (troque o ano se precisar) -->
   <div class="container foot-bottom">
-    <span>© 2026 Restaurante Deus é Fiel. Todos os direitos reservados.</span>
+    <span>© 2026 Restaurante e Hotel Deus é Fiel. Todos os direitos reservados.</span>
     <span>Feito com carinho em Caetés, PE</span>
   </div>
 </footer>

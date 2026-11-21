@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--
 ==============================================================================
-  RESTAURANTE DEUS É FIEL — PÁGINA CARDÁPIO — URL: /cardapio/
+  RESTAURANTE E HOTEL DEUS É FIEL — PÁGINA CARDÁPIO — URL: /cardapio/
   Site estático: cada página é uma pasta com um index.html. Arquivos compartilhados:
     assets/css/style.css .... todos os estilos ([CSS-01..25])
     assets/js/main.js ....... menu, progresso, animações, abas do cardápio ([JS-01..05])
-    assets/img/ ............. fotos do banner e do salão
+    assets/img/ ............. fotos, logo, imagem de compartilhamento e favicon
   Estrutura deste arquivo: [HEAD] informações da página (título, descrição, canonical)
     [HTML-01..04] barra de progresso, barra superior, menu lateral (iguais em todas as páginas)
     [PAG-4] conteúdo desta página · [HTML-05..06] rodapé e botão flutuante do WhatsApp
@@ -22,13 +22,32 @@
 <!-- Cor da barra do navegador no celular. -->
 <meta name="theme-color" content="#1c0f09">
 <!-- Título da aba do navegador e do resultado no Google (exclusivo desta página). -->
-<title>Cardápio | Restaurante Deus é Fiel em Caetés - PE</title>
+<title>Cardápio do Restaurante e Hotel Deus é Fiel | Caetés - PE</title>
 <!-- Texto que aparece no Google embaixo do título (exclusivo desta página, ideal até ~160 caracteres). -->
-<meta name="description" content="Veja o cardápio do Restaurante Deus é Fiel, em Caetés - PE: café da manhã, almoço, janta, pizzas, bebidas, sobremesas e mais, com descrição e preços.">
+<meta name="description" content="Cardápio com café da manhã, almoço, janta, pizzas, bebidas e sobremesas do Restaurante e Hotel Deus é Fiel, em Caetés - PE. Veja descrições e preços.">
 <!-- Endereço oficial desta página (absoluto): evita que o Google trate variações da URL como páginas diferentes. -->
 <link rel="canonical" href="https://restaurante-deus-fiel.vercel.app/cardapio/">
 <!-- Permite que o Google indexe a página e siga os links dela. -->
 <meta name="robots" content="index, follow">
+<!-- Compartilhamento (WhatsApp, Facebook, X/Twitter...): título, descrição, endereço e imagem desta página. Imagem 1200x630 com a logo. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Restaurante e Hotel Deus é Fiel">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Cardápio do Restaurante e Hotel Deus é Fiel | Caetés - PE">
+<meta property="og:description" content="Cardápio com café da manhã, almoço, janta, pizzas, bebidas e sobremesas do Restaurante e Hotel Deus é Fiel, em Caetés - PE. Veja descrições e preços.">
+<meta property="og:url" content="https://restaurante-deus-fiel.vercel.app/cardapio/">
+<meta property="og:image" content="https://restaurante-deus-fiel.vercel.app/assets/img/og-restaurante-e-hotel-deus-e-fiel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo do Restaurante e Hotel Deus é Fiel, com um chef segurando uma cloche">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cardápio do Restaurante e Hotel Deus é Fiel | Caetés - PE">
+<meta name="twitter:description" content="Cardápio com café da manhã, almoço, janta, pizzas, bebidas e sobremesas do Restaurante e Hotel Deus é Fiel, em Caetés - PE. Veja descrições e preços.">
+<meta name="twitter:image" content="https://restaurante-deus-fiel.vercel.app/assets/img/og-restaurante-e-hotel-deus-e-fiel.jpg">
+<!-- Ícone do site (favicon) nas abas do navegador, no Google e na tela inicial do celular. Arquivos: favicon.ico e apple-touch-icon.png na raiz; favicon-192.png em assets/img/. -->
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- Avisa ao CSS que o JavaScript está ativo (troca "no-js-fallback" por "js"). Sem JS, o conteúdo aparece normalmente. -->
 <script>document.documentElement.className='js';</script>
 <!-- Acelera o carregamento das fontes do Google (as duas linhas abaixo). -->
@@ -53,7 +72,7 @@
   <!-- Logo: leva para a página inicial (/) -->
   <a href="/" class="brand">
     <span class="brand-top">Deus é Fiel</span>
-    <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+    <span class="brand-bottom">RESTAURANTE E HOTEL</span>
   </a>
   <!-- Botão do WhatsApp (reserva) -->
   <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="icon-btn whats-topbar" aria-label="Reservar pelo WhatsApp">
@@ -70,7 +89,7 @@
   <div class="sidebar-head">
     <a href="/" class="brand">
       <span class="brand-top">Deus é Fiel</span>
-      <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+      <span class="brand-bottom">RESTAURANTE E HOTEL</span>
     </a>
     <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">×</button>
   </div>
@@ -80,6 +99,7 @@
       <a href="/sobre/">Sobre</a>
       <a href="/delicias/">Delícias</a>
       <a href="/cardapio/" class="is-active" aria-current="page">Cardápio</a>
+      <a href="/hospedagem/">Hospedagem</a>
       <a href="/depoimentos/">Depoimentos</a>
       <a href="/localizacao/">Localização</a>
       <a href="/faq/">Dúvidas</a>
@@ -115,7 +135,7 @@
   <div class="container">
     <span class="eyebrow reveal">Cardápio do restaurante</span>
     <h1 class="reveal">Sabor de comida caseira, todo dia</h1>
-    <p class="reveal">Feito com carinho pra você — qualidade, sabor e tradição em cada prato.</p>
+    <p class="reveal">Feito com carinho pra você — qualidade e sabor em cada prato.</p>
   </div>
 </section>
 
@@ -753,9 +773,9 @@
   <div class="container foot-top">
     <!-- Coluna: marca e texto de apresentação -->
     <div class="foot-brand">
-      <span class="brand-top" style="font-size:1.4rem;">Restaurante Deus é Fiel</span>
+      <span class="brand-top" style="font-size:1.4rem;">Restaurante e Hotel Deus é Fiel</span>
       <p><strong style="color:var(--cream);">Boa comida. Bons momentos. Em Caetés.</strong></p>
-      <p>O Restaurante Deus é Fiel é uma opção para quem procura um lugar para comer em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
+      <p>O Restaurante e Hotel Deus é Fiel é uma opção para quem procura um lugar para comer ou se hospedar em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
     </div>
     <!-- Coluna: Contato -->
     <div class="foot-col">
@@ -784,7 +804,7 @@
   </div>
   <!-- Linha final do rodapé: direitos reservados (troque o ano se precisar) -->
   <div class="container foot-bottom">
-    <span>© 2026 Restaurante Deus é Fiel. Todos os direitos reservados.</span>
+    <span>© 2026 Restaurante e Hotel Deus é Fiel. Todos os direitos reservados.</span>
     <span>Feito com carinho em Caetés, PE</span>
   </div>
 </footer>

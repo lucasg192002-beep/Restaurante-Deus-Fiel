@@ -381,8 +381,9 @@ main.page{ padding-top:var(--topbar-h); min-height:60vh; }
   width:100%; aspect-ratio:736 / 504; min-height:280px;
   border-radius:24px; border:1px solid var(--line-dark);
   position:relative; overflow:hidden;
-  background-image:var(--img-sobre); background-size:cover; background-position:center;
 }
+/* A foto do salão é uma imagem de verdade (<img> com texto alternativo): preenche a moldura sem deformar */
+.moments-visual img{ display:block; width:100%; height:100%; object-fit:cover; }
 /* Parágrafos do texto ao lado da foto */
 .moments-text p{ color:var(--cream-soft); margin-top:16px; line-height:1.75; }
 /* Frase final em destaque ("Porque comida boa alimenta...") */
@@ -720,6 +721,16 @@ footer{ background:var(--charcoal); border-top:1px solid var(--line-dark); paddi
 :focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
 
 /* ==========================================================================
+   [CSS-23B] LINKS DENTRO DOS CARTÕES (páginas inicial e Hospedagem)
+   ========================================================================== */
+/* Link de chamada no fim do cartão (ex.: "Ver cardápio"): dourado em fundo escuro */
+.card-link{ display:inline-block; margin-top:14px; font-weight:800; color:var(--gold); }
+/* Em seção clara o link fica vermelho-tijolo */
+.section--light .card-link{ color:var(--brick); }
+/* Sublinhado ao passar o mouse ou focar com o teclado */
+.card-link:hover, .card-link:focus-visible{ text-decoration:underline; text-underline-offset:3px; }
+
+/* ==========================================================================
    [CSS-24] SEM JAVASCRIPT
    O conteúdo principal está no HTML de cada página. Estas regras garantem que
    menu e cardápio continuem acessíveis mesmo se o JavaScript falhar.
@@ -739,11 +750,11 @@ footer{ background:var(--charcoal); border-top:1px solid var(--line-dark); paddi
    [CSS-25] IMAGENS (arquivos na pasta assets/img/)
    Os caminhos são relativos a este arquivo (assets/css/). Para trocar uma foto,
    substitua o arquivo em assets/img/ mantendo o mesmo nome.
-     [IMG-01] banner.jpg ... foto de fundo do banner (página inicial "/")
-     [IMG-02] salao.jpg .... foto do salão (página /sobre/, seção "A experiência")
+     [IMG-01] banner-restaurante-deus-e-fiel.jpg ........ foto de fundo do banner (página inicial "/")
+     [IMG-02] salao-restaurante-deus-e-fiel-caetes-pe.jpg  foto do salão (<img> em /sobre/, seção "A experiência")
+     Outros arquivos: logo-..., og-... (compartilhamento), favicon-192.png; favicon.ico e apple-touch-icon.png ficam na raiz.
    ========================================================================== */
 /* [IMG-01] foto de fundo do banner; usada em .hero ([CSS-11]) */
-.hero{ --img-hero: url("../img/banner.jpg"); }
-/* [IMG-02] foto do salão; usada em .moments-visual ([CSS-13]) */
-.moments-visual{ --img-sobre: url("../img/salao.jpg"); }
+.hero{ --img-hero: url("../img/banner-restaurante-deus-e-fiel.jpg"); }
+/* [IMG-02] a foto do salão agora é uma <img> na página /sobre/ (assets/img/salao-restaurante-deus-e-fiel-caetes-pe.jpg); não usa mais CSS */
 
