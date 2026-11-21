@@ -1,6 +1,0 @@
-# Regras para os robôs de busca: todos podem rastrear o site inteiro.
-User-agent: *
-Allow: /
-
-# Mapa do site
-Sitemap: https://restaurante-deus-fiel.vercel.app/sitemap.xml
