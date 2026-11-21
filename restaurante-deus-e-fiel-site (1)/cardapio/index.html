@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<!--
+==============================================================================
+  RESTAURANTE DEUS É FIEL — PÁGINA CARDÁPIO — URL: /cardapio/
+  Site estático: cada página é uma pasta com um index.html. Arquivos compartilhados:
+    assets/css/style.css .... todos os estilos ([CSS-01..25])
+    assets/js/main.js ....... menu, progresso, animações, abas do cardápio ([JS-01..05])
+    assets/img/ ............. fotos do banner e do salão
+  Estrutura deste arquivo: [HEAD] informações da página (título, descrição, canonical)
+    [HTML-01..04] barra de progresso, barra superior, menu lateral (iguais em todas as páginas)
+    [PAG-4] conteúdo desta página · [HTML-05..06] rodapé e botão flutuante do WhatsApp
+  Padrão: todo bloco novo ganha um comentário dizendo o que é e como editar.
+==============================================================================
+-->
+<html lang="pt-BR" class="no-js-fallback">
+<head>
+<!-- ===== [HEAD] INFORMAÇÕES DESTA PÁGINA (únicas em cada página: título, descrição e endereço canônico) ===== -->
+<!-- Codificação de caracteres (acentos). Não mexer. -->
+<meta charset="UTF-8">
+<!-- Faz o site se ajustar à tela do celular. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Cor da barra do navegador no celular. -->
+<meta name="theme-color" content="#1c0f09">
+<!-- Título da aba do navegador e do resultado no Google (exclusivo desta página). -->
+<title>Cardápio | Restaurante Deus é Fiel em Caetés - PE</title>
+<!-- Texto que aparece no Google embaixo do título (exclusivo desta página, ideal até ~160 caracteres). -->
+<meta name="description" content="Veja o cardápio do Restaurante Deus é Fiel, em Caetés - PE: café da manhã, almoço, janta, pizzas, bebidas, sobremesas e mais, com descrição e preços.">
+<!-- Endereço oficial desta página (absoluto): evita que o Google trate variações da URL como páginas diferentes. -->
+<link rel="canonical" href="https://restaurante-deus-fiel.vercel.app/cardapio/">
+<!-- Permite que o Google indexe a página e siga os links dela. -->
+<meta name="robots" content="index, follow">
+<!-- Avisa ao CSS que o JavaScript está ativo (troca "no-js-fallback" por "js"). Sem JS, o conteúdo aparece normalmente. -->
+<script>document.documentElement.className='js';</script>
+<!-- Acelera o carregamento das fontes do Google (as duas linhas abaixo). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fontes do site: Fraunces (títulos) e Manrope (textos). -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Estilos compartilhados por todas as páginas ([CSS-01..25]). -->
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- ===== [HTML-01] BARRA DE PROGRESSO DE ROLAGEM (largura controlada pelo JS, ver [JS-02] em assets/js/main.js) ===== -->
+<div class="progress" id="progressBar"></div>
+
+<!-- ===== [HTML-02] BARRA SUPERIOR (só celular/tablet): botão do menu, logo e WhatsApp ===== -->
+<header class="topbar">
+  <!-- Botão ☰ que abre o menu lateral (ver [JS-01]) -->
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <!-- Logo: leva para a página inicial (/) -->
+  <a href="/" class="brand">
+    <span class="brand-top">Deus é Fiel</span>
+    <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+  </a>
+  <!-- Botão do WhatsApp (reserva) -->
+  <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="icon-btn whats-topbar" aria-label="Reservar pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+  </a>
+</header>
+
+<!-- ===== [HTML-03] FUNDO ESCURO atrás do menu lateral (celular/tablet) ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===== [HTML-04] MENU LATERAL: gaveta no celular/tablet, coluna fixa no desktop ===== -->
+<aside class="sidebar" id="sidebar">
+  <!-- Topo do menu: logo + botão × de fechar -->
+  <div class="sidebar-head">
+    <a href="/" class="brand">
+      <span class="brand-top">Deus é Fiel</span>
+      <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+    </a>
+    <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">×</button>
+  </div>
+  <!-- Links das páginas: cada um leva a uma página de verdade (URL própria). O link da página aberta recebe class="is-active" e aria-current="page".
+       Este menu se repete em todos os arquivos .html: ao mudar um link, mude nos 7 arquivos (Ctrl+F no texto do link). -->
+  <nav class="sidebar-nav" aria-label="Menu principal">
+      <a href="/sobre/">Sobre</a>
+      <a href="/delicias/">Delícias</a>
+      <a href="/cardapio/" class="is-active" aria-current="page">Cardápio</a>
+      <a href="/depoimentos/">Depoimentos</a>
+      <a href="/localizacao/">Localização</a>
+      <a href="/faq/">Dúvidas</a>
+  </nav>
+  <!-- Botão verde do WhatsApp (reservas) -->
+  <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="btn btn--whats btn--full sidebar-cta">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+    Reservar pelo WhatsApp
+  </a>
+  <!-- Instagram e Google Maps numa linha só, em movimento horizontal (letreiro). 
+       O 2º grupo é uma cópia do 1º (aria-hidden) para o movimento nunca ter "buraco". Se mudar um link, mude nos dois grupos. -->
+  <div class="sidebar-social" aria-label="Redes e localização">
+    <div class="marquee-track">
+      <span class="marquee-group">
+        <a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener">&#64;restauranteehoteldeusefiel</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener">Google Maps</a>
+      </span>
+      <span class="marquee-group" aria-hidden="true">
+        <a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener" tabindex="-1">&#64;restauranteehoteldeusefiel</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener" tabindex="-1">Google Maps</a>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<!-- ==========================================================================
+     [PAG-4] PÁGINA CARDÁPIO — URL: /cardapio/
+     ========================================================================== -->
+<main class="page" id="view-cardapio">
+<!-- [PAG-4.1] CABEÇALHO DA PÁGINA -->
+<section class="page-hero">
+  <div class="brick-texture"></div>
+  <div class="container">
+    <span class="eyebrow reveal">Cardápio do restaurante</span>
+    <h1 class="reveal">Sabor de comida caseira, todo dia</h1>
+    <p class="reveal">Feito com carinho pra você — qualidade, sabor e tradição em cada prato.</p>
+  </div>
+</section>
+
+<!-- [PAG-4.2] CARDÁPIO COM ABAS. Veja o passo a passo para editar logo abaixo, em [PAG-4-ABAS] e [PAG-4-PAINEIS]. -->
+<section class="section--dark section--menu">
+
+  <!-- [PAG-4-ABAS] BOTÕES DAS ABAS. Cada botão abre o painel com o mesmo nome (aria-controls = id do painel).
+       No celular a faixa rola para o lado e fica fixa embaixo da barra superior. A aba marcada com
+       aria-selected="true" é a que abre primeiro. -->
+  <div class="menu-tabs-wrap">
+    <div class="container">
+      <div class="menu-tabs" role="tablist" aria-label="Categorias do cardápio">
+        <button type="button" class="menu-tab" role="tab" id="aba-cafe-da-manha" aria-controls="painel-cafe-da-manha" aria-selected="true">Café da manhã</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-almoco" aria-controls="painel-almoco" aria-selected="false" tabindex="-1">Almoço</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-jantar" aria-controls="painel-jantar" aria-selected="false" tabindex="-1">Jantar</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-pizzas" aria-controls="painel-pizzas" aria-selected="false" tabindex="-1">Pizzas</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-bebidas" aria-controls="painel-bebidas" aria-selected="false" tabindex="-1">Bebidas</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-sobremesas" aria-controls="painel-sobremesas" aria-selected="false" tabindex="-1">Sobremesas</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-sorvetes-e-picoles" aria-controls="painel-sorvetes-e-picoles" aria-selected="false" tabindex="-1">Sorvetes e picolés</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-bomboniere-e-doces" aria-controls="painel-bomboniere-e-doces" aria-selected="false" tabindex="-1">Bomboniere e doces</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-salgadinhos-e-chocolates" aria-controls="painel-salgadinhos-e-chocolates" aria-selected="false" tabindex="-1">Salgadinhos e chocolates</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-produtos-bauducco" aria-controls="painel-produtos-bauducco" aria-selected="false" tabindex="-1">Produtos Bauducco</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-itens-para-pizza" aria-controls="painel-itens-para-pizza" aria-selected="false" tabindex="-1">Itens para pizza</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-pamonha-e-canjica" aria-controls="painel-pamonha-e-canjica" aria-selected="false" tabindex="-1">Pamonha e canjica</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-produtos-de-limpeza" aria-controls="painel-produtos-de-limpeza" aria-selected="false" tabindex="-1">Produtos de limpeza</button>
+        <button type="button" class="menu-tab" role="tab" id="aba-hospedagem" aria-controls="painel-hospedagem" aria-selected="false" tabindex="-1">Hospedagem</button>
+        <!-- TEMPORÁRIA: aba da campanha Black November. Quando a campanha acabar, apague este botão e o painel [ABA-15]. -->
+        <button type="button" class="menu-tab menu-tab--promo" role="tab" id="aba-black-november" aria-controls="painel-black-november" aria-selected="false" tabindex="-1">Black November</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- [PAG-4-PAINEIS] UM PAINEL POR ABA. Dentro de cada painel: grupos (menu-group) e, em cada grupo,
+         a lista de pratos (menu-list). CADA PRATO É UMA LINHA, no formato:
+           <div class="menu-item"> nome + preço + descrição </div>
+         Para mudar preço/descrição, procure o nome do prato (Ctrl+F) e edite o texto.
+         Para adicionar um prato, copie uma linha inteira e cole dentro da mesma menu-list.
+         Preço a combinar: use <span class="price price--ask">Consulte</span>.
+         Para criar uma ABA nova: (1) copie um botão menu-tab e troque texto, id e aria-controls;
+         (2) copie um painel menu-panel inteiro e use o id que o botão aponta (começa com painel-).
+         Os painéis que não são o primeiro levam o atributo hidden (escondido até clicar na aba). -->
+
+      <!-- ========== [ABA-01] CAFÉ DA MANHÃ ========== -->
+      <div class="menu-panel" id="painel-cafe-da-manha" role="tabpanel" aria-labelledby="aba-cafe-da-manha">
+        <h2 class="menu-panel-title">Café da manhã</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Macaxeira</span><span class="fill"></span><span class="price">R$ 13,00</span></div><p class="desc">Porção de macaxeira.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cuscuz</span><span class="fill"></span><span class="price">R$ 13,00</span></div><p class="desc">Porção de cuscuz.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata-doce</span><span class="fill"></span><span class="price">R$ 13,00</span></div><p class="desc">Porção de batata-doce.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tapioca com Carne ou Frango</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Tapioca recheada com carne ou frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tapioca com Ovo</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Tapioca recheada com ovo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-02] ALMOÇO ========== -->
+      <div class="menu-panel" id="painel-almoco" role="tabpanel" aria-labelledby="aba-almoco" hidden>
+        <h2 class="menu-panel-title">Almoço</h2>
+        <!-- Grupo: Marmitas tradicionais -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Marmitas tradicionais</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picanha</span><span class="fill"></span><span class="price">R$ 60,00</span></div><p class="desc">Picanha acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Peixe Empanado</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Peixe empanado acompanhado de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne de Sol</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Carne de sol acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango Assado</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Frango assado acompanhado de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fígado</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Fígado acompanhado de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Panqueca de Carne Bovina</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Panqueca recheada com carne bovina, acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Panqueca de Frango</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Panqueca recheada com frango, acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Calabresa assada acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Linguiça toscana acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Filé de frango assado acompanhado de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bisteca Bovina</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Bisteca bovina assada acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bisteca Suína</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Bisteca suína assada acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Lasanha à Bolonhesa</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Fatia de lasanha à bolonhesa acompanhada de arroz e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Lasanha de Frango</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Fatia de lasanha de frango acompanhada de arroz e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Omelete</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Omelete acompanhada de arroz, feijão, macarrão, salada verde, legumes cozidos, farofa e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bife Bovino</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Bife bovino acompanhado de arroz, feijão, macarrão, farofa, salada verde, legumes cozidos e batata frita.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Marmitas pequenas -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Marmitas pequenas</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fígado Pequeno</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Fígado acompanhado de arroz, feijão, farofa e salada verde.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango Pequeno</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Filé de frango acompanhado de arroz, feijão, farofa, salada verde e verduras cozidas.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa Pequena</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Marmita de calabresa acompanhada de arroz, feijão, farofa, salada verde e verduras cozidas.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana Pequena</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Marmita de toscana acompanhada de arroz, feijão, farofa, salada verde e verduras cozidas.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sarapatel Pequeno</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Sarapatel acompanhado de arroz, feijão, farofa, salada verde, verduras cozidas e batata frita.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pratos especiais -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pratos especiais</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Guisada</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Carne guisada acompanhada de arroz, feijão, salada verde, verduras cozidas e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sarapatel</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Sarapatel acompanhado de arroz, feijão, farofa, salada verde, verduras cozidas e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Almôndegas</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Almôndegas ao molho acompanhadas de macarrão.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Strogonoff de Frango</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Strogonoff de frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Peixe ao Molho</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Peixe preparado ao molho.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mocotó de Boi</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Mocotó acompanhado de pirão, arroz, feijão, macarrão, farofa (cuscuz ou farinha) e saladas.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Escondidinho de Charque</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Escondidinho de charque acompanhado de arroz e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Escondidinho de Peixe</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Escondidinho de peixe acompanhado de arroz e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Boi</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Filé de boi acompanhado de arroz, feijão, macarrão, salada e purê.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bife de Boi</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Bife de boi.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Escondidinho de Carne</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Escondidinho de carne acompanhado de arroz e batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Peixe Frito</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Filé de peixe frito.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bacalhau ao Molho</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Bacalhau preparado ao molho.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango Assado Pequeno</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Frango assado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Panqueca de Presunto e Queijo</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Panqueca recheada com presunto e queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Guisada Bovina</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Carne bovina guisada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fava Verde</span><span class="fill"></span><span class="price">R$ 28,00</span></div><p class="desc">Fava verde acompanhada de arroz, macarrão, feijão e carne.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Porção de Purê</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Porção de purê de batata.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Parmegianas -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Parmegianas</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango à Parmegiana</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Filé de frango à parmegiana acompanhado de macarrão ao molho vermelho e purê ou batata frita.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bife Bovino à Parmegiana</span><span class="fill"></span><span class="price">R$ 39,00</span></div><p class="desc">Bife bovino à parmegiana acompanhado de macarrão ao molho vermelho e batata frita ou purê.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Peixe à Parmegiana</span><span class="fill"></span><span class="price">R$ 39,00</span></div><p class="desc">Filé de peixe à parmegiana acompanhado de macarrão ao molho vermelho e batata frita ou purê de batata.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Feijoada -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Feijoada</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Feijoada Completa</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Feijoada acompanhada de torresmo, arroz, couve, vinagrete e laranja.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Feijoada sem Acompanhamentos</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de feijoada sem acompanhamentos.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Buchada -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Buchada</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Buchada Completa</span><span class="fill"></span><span class="price">R$ 42,00</span></div><p class="desc">Buchada acompanhada de arroz, macarrão, vinagrete e pirão.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-03] JANTAR ========== -->
+      <div class="menu-panel" id="painel-jantar" role="tabpanel" aria-labelledby="aba-jantar" hidden>
+        <h2 class="menu-panel-title">Jantar</h2>
+        <!-- Grupo: Porções -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Porções</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Asinha de Frango</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Porção de asas de galinha fritas.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coração de Galinha</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Porção de coração de galinha frito.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Frita Pequena</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Porção de batata frita tamanho pequeno.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Frita Média</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de batata frita tamanho médio.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Frita Grande</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Porção de batata frita tamanho grande.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango Assado</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Filé de peito de frango assado na chapa.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne de Sol</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Porção de carne de sol.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picanha</span><span class="fill"></span><span class="price">R$ 70,00</span></div><p class="desc">Porção de picanha.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fígado</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de fígado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de calabresa.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de linguiça toscana.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bisteca Suína</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de bisteca suína.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bisteca Bovina</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Porção de bisteca bovina.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bife de Boi</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Porção de bife bovino.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sarapatel</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de sarapatel.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tilápia</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de tilápia.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Porção de Bacalhau</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Porção de bacalhau.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Boi Guisado</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de carne bovina guisada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Porção de filé de frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Porção de Arroz</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Porção de arroz.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Porção de Torresmo</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Porção de torresmo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Lasanha de Frango</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Porção de lasanha de frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Galeto Assado</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Galeto completo assado no forno.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Salgados e lanches -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Salgados e lanches</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torta de Frango</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Torta recheada com frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Broas</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Produto derivado de trigo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Rocamboles</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Produto derivado de trigo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sonhos</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Produto derivado de trigo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pão Bisnaguinha de Coco</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Pão de bisnaguinha com coco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Frango</span><span class="fill"></span><span class="price">R$ 7,49</span></div><p class="desc">Pastel recheado com frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel Misto</span><span class="fill"></span><span class="price">R$ 8,49</span></div><p class="desc">Pastel recheado com presunto e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Bagaceira</span><span class="fill"></span><span class="price">R$ 9,49</span></div><p class="desc">Pastel recheado com carne, frango, presunto e queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Queijo</span><span class="fill"></span><span class="price">R$ 6,99</span></div><p class="desc">Pastel recheado com queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Carne</span><span class="fill"></span><span class="price">R$ 6,99</span></div><p class="desc">Pastel recheado com carne.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Calabresa</span><span class="fill"></span><span class="price">R$ 8,49</span></div><p class="desc">Pastel recheado com calabresa.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Mussarela</span><span class="fill"></span><span class="price">R$ 9,49</span></div><p class="desc">Pastel recheado com mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Frango com Catupiry</span><span class="fill"></span><span class="price">R$ 9,99</span></div><p class="desc">Pastel recheado com frango e catupiry.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel Bagaceira Especial</span><span class="fill"></span><span class="price">R$ 9,99</span></div><p class="desc">Pastel recheado com carne, calabresa, frango, presunto e queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Pizza</span><span class="fill"></span><span class="price">R$ 9,99</span></div><p class="desc">Pastel recheado com mussarela, calabresa, frango e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coxinha de Frango</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Coxinha recheada com frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cachorro-Quente</span><span class="fill"></span><span class="price">R$ 8,00</span></div><p class="desc">Pão com salsicha, carne moída, purê de batata, batata palha, milho e vinagrete.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Bacon</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Pão, carne, bacon, mussarela e cheddar.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Calabresa</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Pão, carne, calabresa, mussarela e cheddar.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Queijudo</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Pão, carne, queijo coalho, cheddar, alface e tomate.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Tudão</span><span class="fill"></span><span class="price">R$ 27,00</span></div><p class="desc">Pão, carne, queijo coalho, frango, ovo, calabresa, bacon, tomate, alface e cheddar.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Ivete Sangalo</span><span class="fill"></span><span class="price">R$ 9,99</span></div><p class="desc">Pão, carne de 100g, alface, cebola, queijo mussarela e ovo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bolo de Queijo</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Bolo de queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Enroladinho</span><span class="fill"></span><span class="price">R$ 4,00</span></div><p class="desc">Enroladinho salgado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Risole</span><span class="fill"></span><span class="price">R$ 4,00</span></div><p class="desc">Risole salgado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastel de Charque</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Pastel de charque com salada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Massa para Panqueca</span><span class="fill"></span><span class="price">R$ 4,00</span></div><p class="desc">Massa para preparo de panqueca.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Monstro</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Lanche X-Monstro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">X-Salada</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Lanche X-Salada.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Queijos e chocolates -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Queijos e chocolates</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Queijo de Manteiga</span><span class="fill"></span><span class="price">R$ 28,00</span></div><p class="desc">Queijo de manteiga.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Chocolate Lacta</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Chocolate Lacta.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-04] PIZZAS ========== -->
+      <div class="menu-panel" id="painel-pizzas" role="tabpanel" aria-labelledby="aba-pizzas" hidden>
+        <h2 class="menu-panel-title">Pizzas</h2>
+        <!-- Grupo: Pizzas salgadas grandes (G) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas salgadas grandes (G)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Molho de tomate, toscana, mussarela, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Queijo Coalho G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Pizza de queijo coalho.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Russa G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Calabresa, cebola, mussarela e catupiry.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Seca G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Pizza de carne seca.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Portuguesa G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Presunto, mussarela, cebola, ovo, ervilha e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bagaceira G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Pizza de bagaceira.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Napolitana G</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Mussarela, tomate e queijo ralado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mussarela G</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Mussarela, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Moda da Casa G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Frango, mussarela e bacon.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mexicana G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Calabresa, ovo, milho e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Italiana G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Presunto, calabresa, ovo e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango com Catupiry G</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Frango, catupiry, mussarela, tomate, azeitona e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Dois Queijos G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Molho de tomate, mussarela, catupiry, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa G</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Calabresa acebolada e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Caipira G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Frango, mussarela, milho e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bauru G</span><span class="fill"></span><span class="price">R$ 38,00</span></div><p class="desc">Molho de tomate, tomate, mussarela, presunto e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Palha G</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Mussarela e batata palha.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Baiana G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Presunto, calabresa, cebola, ovo, pimenta e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bacon G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Bacon, molho de tomate, azeitona, mussarela e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Americana G</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Presunto, mussarela, tomate e bacon.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa Especial G</span><span class="fill"></span><span class="price">R$ 39,99</span></div><p class="desc">Calabresa especial.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizzas salgadas médias (M) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas salgadas médias (M)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mussarela M</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Mussarela, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa M</span><span class="fill"></span><span class="price">R$ 27,00</span></div><p class="desc">Calabresa, cebola e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango com Catupiry M</span><span class="fill"></span><span class="price">R$ 27,00</span></div><p class="desc">Frango, catupiry, mussarela, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Caipira M</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Frango, mussarela, milho e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Dois Queijos M</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Mussarela, catupiry, molho de tomate, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Portuguesa M</span><span class="fill"></span><span class="price">R$ 29,99</span></div><p class="desc">Presunto, mussarela, cebola, ovo, ervilha e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bauru M</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Molho de tomate, tomate, mussarela, presunto e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana M</span><span class="fill"></span><span class="price">R$ 28,99</span></div><p class="desc">Molho de tomate, toscana, mussarela, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bacon M</span><span class="fill"></span><span class="price">R$ 32,99</span></div><p class="desc">Bacon, mussarela, molho de tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Moda da Casa M</span><span class="fill"></span><span class="price">R$ 32,99</span></div><p class="desc">Frango, bacon, mussarela e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Baiana M</span><span class="fill"></span><span class="price">R$ 31,00</span></div><p class="desc">Presunto, calabresa, cebola, ovo, pimenta e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Russa M</span><span class="fill"></span><span class="price">R$ 32,00</span></div><p class="desc">Calabresa, cebola, mussarela e catupiry.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Americana M</span><span class="fill"></span><span class="price">R$ 29,00</span></div><p class="desc">Presunto, mussarela, tomate e bacon.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Italiana M</span><span class="fill"></span><span class="price">R$ 31,00</span></div><p class="desc">Presunto, calabresa, ovo e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Palha M</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Mussarela e batata palha.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mexicana M</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Calabresa, ovo, milho e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Napolitana M</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Mussarela, tomate e queijo ralado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Seca M</span><span class="fill"></span><span class="price">R$ 34,99</span></div><p class="desc">Pizza de carne seca.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizzas salgadas pequenas (P) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas salgadas pequenas (P)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mussarela P</span><span class="fill"></span><span class="price">R$ 23,99</span></div><p class="desc">Mussarela, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Calabresa P</span><span class="fill"></span><span class="price">R$ 20,99</span></div><p class="desc">Calabresa, cebola, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango com Catupiry P</span><span class="fill"></span><span class="price">R$ 21,99</span></div><p class="desc">Frango, mussarela, catupiry, azeitona, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Caipira P</span><span class="fill"></span><span class="price">R$ 23,99</span></div><p class="desc">Frango, mussarela, milho e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Dois Queijos P</span><span class="fill"></span><span class="price">R$ 22,99</span></div><p class="desc">Mussarela, molho de tomate, catupiry, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Portuguesa P</span><span class="fill"></span><span class="price">R$ 23,99</span></div><p class="desc">Presunto, mussarela, cebola, ovo, ervilha e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bauru P</span><span class="fill"></span><span class="price">R$ 22,99</span></div><p class="desc">Presunto, mussarela, molho de tomate, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toscana P</span><span class="fill"></span><span class="price">R$ 24,99</span></div><p class="desc">Molho de tomate, toscana, cebola, mussarela, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bacon P</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Bacon, mussarela, molho de tomate, orégano e azeitona.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Moda da Casa P</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Frango, mussarela, bacon, azeitona e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Baiana P</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Presunto, calabresa, cebola, ovo, pimenta e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Russa P</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Calabresa, cebola, mussarela e catupiry.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Americana P</span><span class="fill"></span><span class="price">R$ 26,00</span></div><p class="desc">Presunto, mussarela, tomate e bacon.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Italiana P</span><span class="fill"></span><span class="price">R$ 27,00</span></div><p class="desc">Presunto, calabresa, ovo e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batata Palha P</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Mussarela e batata palha.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mexicana P</span><span class="fill"></span><span class="price">R$ 28,00</span></div><p class="desc">Calabresa, ovo, milho e mussarela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Napolitana P</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Mussarela, tomate e queijo ralado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Seca P</span><span class="fill"></span><span class="price price--ask">Consulte</span></div><p class="desc">Pizza de carne seca.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizzas doces grandes (G) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas doces grandes (G)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Banana G</span><span class="fill"></span><span class="price">R$ 33,00</span></div><p class="desc">Banana em calda, mussarela e canela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Chocolate G</span><span class="fill"></span><span class="price">R$ 50,00</span></div><p class="desc">Pizza doce de chocolate.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Prestígio G</span><span class="fill"></span><span class="price">R$ 35,99</span></div><p class="desc">Chocolate e coco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tentação G</span><span class="fill"></span><span class="price">R$ 36,99</span></div><p class="desc">Chocolate com morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Romeu e Julieta G</span><span class="fill"></span><span class="price">R$ 34,99</span></div><p class="desc">Mussarela e goiabada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Doce de Leite G</span><span class="fill"></span><span class="price">R$ 34,00</span></div><p class="desc">Mussarela e doce de leite.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizzas doces médias (M) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas doces médias (M)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Banana M</span><span class="fill"></span><span class="price">R$ 24,00</span></div><p class="desc">Banana em calda, mussarela e canela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Chocolate M</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Pizza doce de chocolate.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Prestígio M</span><span class="fill"></span><span class="price">R$ 26,99</span></div><p class="desc">Chocolate e coco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tentação M</span><span class="fill"></span><span class="price">R$ 28,99</span></div><p class="desc">Chocolate com morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Romeu e Julieta M</span><span class="fill"></span><span class="price">R$ 26,00</span></div><p class="desc">Mussarela e goiabada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Doce de Leite M</span><span class="fill"></span><span class="price">R$ 26,99</span></div><p class="desc">Mussarela e doce de leite.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizzas doces pequenas (P) -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizzas doces pequenas (P)</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Banana P</span><span class="fill"></span><span class="price">R$ 18,99</span></div><p class="desc">Banana em calda, mussarela e canela.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Chocolate P</span><span class="fill"></span><span class="price">R$ 30,00</span></div><p class="desc">Pizza doce de chocolate.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Prestígio P</span><span class="fill"></span><span class="price">R$ 22,99</span></div><p class="desc">Chocolate e coco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Tentação P</span><span class="fill"></span><span class="price">R$ 24,99</span></div><p class="desc">Chocolate com morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Romeu e Julieta P</span><span class="fill"></span><span class="price">R$ 22,99</span></div><p class="desc">Mussarela e goiabada.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Doce de Leite P</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Mussarela e doce de leite.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Pizza especial -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Pizza especial</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pizza Grande de até 2 Sabores</span><span class="fill"></span><span class="price price--ask">Consulte</span></div><p class="desc">Pizza grande com até 2 sabores, cortada em 8 fatias.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-05] BEBIDAS ========== -->
+      <div class="menu-panel" id="painel-bebidas" role="tabpanel" aria-labelledby="aba-bebidas" hidden>
+        <h2 class="menu-panel-title">Bebidas</h2>
+        <!-- Grupo: Refrigerantes -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Refrigerantes</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola 1 Litro</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Refrigerante Coca-Cola PET 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola Zero 1 Litro</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Refrigerante Coca-Cola Zero PET 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola 250ml</span><span class="fill"></span><span class="price">R$ 4,00</span></div><p class="desc">Refrigerante Coca-Cola PET 250ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola Lata 350ml</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Coca-Cola lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola com Café</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Coca-Cola lata sabor café 220ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola Zero Lata</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Coca-Cola Zero lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Guaraná Antarctica Lata 350ml</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Guaraná Antarctica lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta Laranja Lata 350ml</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Fanta sabor laranja lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta Uva Lata 350ml</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Fanta sabor uva lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sprite Limão Lata 350ml</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Refrigerante Sprite lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Jatobá 2 Litros</span><span class="fill"></span><span class="price">R$ 9,00</span></div><p class="desc">Refrigerante Jatobá 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta 2 Litros</span><span class="fill"></span><span class="price">R$ 13,00</span></div><p class="desc">Refrigerante Fanta 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sprite 2 Litros</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Refrigerante Sprite 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Del Valle 1,5 Litro</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Bebida Del Valle 1,5L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sprite 1 Litro</span><span class="fill"></span><span class="price">R$ 8,00</span></div><p class="desc">Refrigerante Sprite 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola 2 Litros</span><span class="fill"></span><span class="price">R$ 16,00</span></div><p class="desc">Refrigerante Coca-Cola 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Guaraná 1 Litro</span><span class="fill"></span><span class="price">R$ 9,00</span></div><p class="desc">Refrigerante Guaraná 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Guaraná 2 Litros</span><span class="fill"></span><span class="price">R$ 14,00</span></div><p class="desc">Refrigerante Guaraná 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta 1,5 Litro</span><span class="fill"></span><span class="price">R$ 11,70</span></div><p class="desc">Refrigerante Fanta 1,5L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta Laranja 2 Litros</span><span class="fill"></span><span class="price">R$ 14,00</span></div><p class="desc">Refrigerante Fanta sabor laranja 2L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fanta 1 Litro</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Refrigerante Fanta 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola 1,5 Litro</span><span class="fill"></span><span class="price">R$ 14,00</span></div><p class="desc">Refrigerante Coca-Cola.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Energéticos -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Energéticos</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Monster Absolutely Zero</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Energético Monster Absolutely Zero 473ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Monster Energy</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Energético Monster 473ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">TNT</span><span class="fill"></span><span class="price">R$ 13,00</span></div><p class="desc">Energético TNT 473ml.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Outras bebidas -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Outras bebidas</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Skinka Laranja</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Bebida Skinka sabor laranja, 450ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Jatobázinho Uva</span><span class="fill"></span><span class="price">R$ 2,00</span></div><p class="desc">Bebida sabor uva, 250ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Jatobázinho Tutti-Frutti</span><span class="fill"></span><span class="price">R$ 2,00</span></div><p class="desc">Bebida sabor tutti-frutti, 250ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Jatobázinho Laranja</span><span class="fill"></span><span class="price">R$ 2,00</span></div><p class="desc">Bebida sabor laranja, 250ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Schweppes Citrus</span><span class="fill"></span><span class="price">R$ 8,00</span></div><p class="desc">Bebida Schweppes Citrus lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Schweppes Mixed Spritz</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Schweppes Mixed Spritz 269ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Del Valle Kapo</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Bebida Del Valle Kapo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água de Coco</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Coco verde gelado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água de Coco Kero Coco</span><span class="fill"></span><span class="price">R$ 17,00</span></div><p class="desc">Água de coco Kero Coco 1L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água de Coco Kero Coco 1L</span><span class="fill"></span><span class="price">R$ 18,84</span></div><p class="desc">Água de coco Kero Coco 1 litro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco Tampico</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco de frutas cítricas 1,5L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toddynho Levinho</span><span class="fill"></span><span class="price">R$ 3,99</span></div><p class="desc">Bebida achocolatada 200ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Toddynho Tradicional</span><span class="fill"></span><span class="price">R$ 3,99</span></div><p class="desc">Bebida achocolatada tradicional 200ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Powerade</span><span class="fill"></span><span class="price price--ask">Consulte</span></div><p class="desc">Bebida isotônica Powerade.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Ypióca Ouro</span><span class="fill"></span><span class="price">R$ 40,00</span></div><p class="desc">Ypióca Ouro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Milk-shake</span><span class="fill"></span><span class="price">R$ 16,00</span></div><p class="desc">Milk-shake.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Sucos naturais – 500ml -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Sucos naturais – 500ml</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Goiaba</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco feito com polpa de goiaba.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Manga</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco feito com polpa de manga.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Caju</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco feito com polpa de caju.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Abacaxi</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco feito com polpa de abacaxi.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Limão</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco natural de limão.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Maracujá</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco natural de maracujá.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Acerola</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Suco natural de acerola.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Laranja</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Suco natural de laranja.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Açaí</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Bebida de açaí.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Morango</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Bebida de morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Suco de Graviola</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Bebida de graviola.</p></div>
+          </div>
+        </div>
+        <!-- Grupo: Água e gelo -->
+        <div class="menu-group">
+          <h3 class="menu-group-title">Água e gelo</h3>
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água sem Gás</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Água mineral sem gás.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água com Gás</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Água mineral com gás.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água 1,5 Litro</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Água mineral 1,5L.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Galão de Água</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Galão de água.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">H2OH! Limão 500ml</span><span class="fill"></span><span class="price">R$ 6,50</span></div><p class="desc">Bebida H2OH! sabor limão 500ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Gelo 3kg</span><span class="fill"></span><span class="price">R$ 8,00</span></div><p class="desc">Pacote de gelo com 3kg.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-06] SOBREMESAS ========== -->
+      <div class="menu-panel" id="painel-sobremesas" role="tabpanel" aria-labelledby="aba-sobremesas" hidden>
+        <h2 class="menu-panel-title">Sobremesas</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pudim</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Fatia de pudim.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bolo Prestígio</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Fatia de bolo com massa sabor chocolate, recheio de coco e cobertura de chocolate, confeitada com coco ralado, morango e beijinho.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bolo de Chocolate com Morango</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Fatia de bolo de chocolate com morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torta de Morango</span><span class="fill"></span><span class="price">R$ 12,00</span></div><p class="desc">Torta de morango com chantilly.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bolo de Macaxeira</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Bolo de macaxeira.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Delícia de Abacaxi</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Sobremesa de abacaxi.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Doce de Leite</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Doce de leite.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-07] SORVETES E PICOLÉS ========== -->
+      <div class="menu-panel" id="painel-sorvetes-e-picoles" role="tabpanel" aria-labelledby="aba-sorvetes-e-picoles" hidden>
+        <h2 class="menu-panel-title">Sorvetes e picolés</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Açaí com Granola Cremoso</span><span class="fill"></span><span class="price">R$ 10,99</span></div><p class="desc">Açaí cremoso acompanhado de granola.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 2L Brigadeiro</span><span class="fill"></span><span class="price">R$ 25,00</span></div><p class="desc">Sorvete sabor brigadeiro, pote de 2 litros.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 2L Morango</span><span class="fill"></span><span class="price">R$ 27,99</span></div><p class="desc">Sorvete sabor morango, pote de 2 litros.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 1L Mesclado Chocolate</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Sorvete mesclado com chocolate, pote de 1 litro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 1L Creme Moranguito</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Sorvete sabor creme moranguito, pote de 1 litro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 1L Creme e Chocotine</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Sorvete sabor creme e chocotine, pote de 1 litro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picolé Max Chocotine</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Picolé sabor chocotine.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete Pote 1L Napolitano</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Sorvete sabor napolitano, pote de 1 litro.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picolé Gelinho de Morango</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Picolé sabor morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picolé Crocante Skimo</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Picolé crocante Skimo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picolé Crocante Tentação</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Picolé crocante Tentação.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Copão 350ml Chocolate</span><span class="fill"></span><span class="price">R$ 8,50</span></div><p class="desc">Copão de sorvete sabor chocolate, 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sundae de Morango</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Sundae sabor morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Picolé Sabor Açaí</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Picolé sabor açaí.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Sorvete no Peso – Creme Ovomaltine</span><span class="fill"></span><span class="price">R$ 45,00</span></div><p class="desc">Sorvete sabor creme com Ovomaltine vendido por peso.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-08] BOMBONIERE E DOCES ========== -->
+      <div class="menu-panel" id="painel-bomboniere-e-doces" role="tabpanel" aria-labelledby="aba-bomboniere-e-doces" hidden>
+        <h2 class="menu-panel-title">Bomboniere e doces</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pastilha Halls</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Pastilha Halls.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Freegells Cereja</span><span class="fill"></span><span class="price price--ask">Consulte</span></div><p class="desc">Pastilha Freegells sabor cereja.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cocada Unidade</span><span class="fill"></span><span class="price">R$ 0,50</span></div><p class="desc">Cocada individual.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pé de Moleque Unidade</span><span class="fill"></span><span class="price">R$ 0,50</span></div><p class="desc">Pé de moleque individual.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bala Doce</span><span class="fill"></span><span class="price">R$ 1,00</span></div><p class="desc">Pacote com 4 unidades.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pirulito</span><span class="fill"></span><span class="price">R$ 0,50</span></div><p class="desc">Pirulito.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mentos</span><span class="fill"></span><span class="price">R$ 2,50</span></div><p class="desc">Bala Mentos.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Trident</span><span class="fill"></span><span class="price">R$ 4,00</span></div><p class="desc">Chiclete Trident.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Paçoca Pacote</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Pacote de paçoca com 64 unidades.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pé de Moleque Pacote</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Pacote de pé de moleque com 54 unidades.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cocada Pacote</span><span class="fill"></span><span class="price price--ask">Consulte</span></div><p class="desc">Pacote de cocada recheada com 6 unidades.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bombom Sonho de Valsa</span><span class="fill"></span><span class="price">R$ 2,00</span></div><p class="desc">Bombom Sonho de Valsa.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-09] SALGADINHOS E CHOCOLATES ========== -->
+      <div class="menu-panel" id="painel-salgadinhos-e-chocolates" role="tabpanel" aria-labelledby="aba-salgadinhos-e-chocolates" hidden>
+        <h2 class="menu-panel-title">Salgadinhos e chocolates</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cheetos Queijo Suíço</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Salgadinho Cheetos Bola sabor queijo suíço, 33g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cheetos Requeijão</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Salgadinho sabor requeijão, 33g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Batatinha Ruffles Original</span><span class="fill"></span><span class="price">R$ 6,50</span></div><p class="desc">Batata Ruffles Original, 33g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Caixa de Bombom Nestlé</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Caixa de bombons Nestlé.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Trento</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Chocolate Trento.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cheetos Parmesão</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Salgadinho Cheetos sabor parmesão.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fandangos</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Salgadinho Fandangos.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torcida Queijo</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Salgadinho Torcida sabor queijo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torcida Churrasco</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Salgadinho Torcida sabor churrasco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Caixa de Bombom Garoto</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Caixa de bombons Garoto.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bauducco Duo</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Bolinho Bauducco Duo.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Bauducco Roll</span><span class="fill"></span><span class="price">R$ 3,00</span></div><p class="desc">Bolinho Bauducco Roll.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mini Bolo Morango</span><span class="fill"></span><span class="price">R$ 2,50</span></div><p class="desc">Mini bolo sabor morango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Barrinha de Chocolate Bauducco</span><span class="fill"></span><span class="price">R$ 2,50</span></div><p class="desc">Barrinha de chocolate Bauducco.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cheetos Crunchy Super</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Salgadinho Cheetos Crunchy Super.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Ruffles Cebola e Salsa</span><span class="fill"></span><span class="price">R$ 6,50</span></div><p class="desc">Batata Ruffles sabor cebola e salsa.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Ruffles Churrasco</span><span class="fill"></span><span class="price">R$ 6,50</span></div><p class="desc">Batata Ruffles sabor churrasco.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-10] PRODUTOS BAUDUCCO ========== -->
+      <div class="menu-panel" id="painel-produtos-bauducco" role="tabpanel" aria-labelledby="aba-produtos-bauducco" hidden>
+        <h2 class="menu-panel-title">Produtos Bauducco</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torrada Tradicional Bauducco</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Torrada tradicional Bauducco, 142g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torrada Integral Bauducco</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Torrada integral Bauducco, 142g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Torradinha Bauducco</span><span class="fill"></span><span class="price">R$ 8,50</span></div><p class="desc">Torradinha Bauducco, 120g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Biscoitos Natalinos Bauducco</span><span class="fill"></span><span class="price">R$ 14,50</span></div><p class="desc">Biscoitos natalinos Bauducco, 110g.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Cesta de Natal Presentiável Bauducco</span><span class="fill"></span><span class="price">R$ 103,50</span></div><p class="desc">Cesta de Natal pequena Bauducco, ideal para presentear. Contém: Panettone 400g, biscoito recheado de chocolate 108g, cookies original 100g, biscoito champanhe 150g, biscoito maisena 170g, torrada tradicional 142g, biscoito recheado de baunilha 108g, pão de mel 240g, wafer maxi baunilha 104g, biscoito recheadinho de goiaba 112g, bolinho duplo chocolate 40g, bolinho Bauducco Duo chocolate 27g, bolinho Roll chocolate 34g, cookies maxi 96g, item colecionável e caixa de papelão pequena.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Chocotone Bites Bauducco</span><span class="fill"></span><span class="price">R$ 18,50</span></div><p class="desc">Chocotone Bites Bauducco, 107g.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-11] ITENS PARA PIZZA ========== -->
+      <div class="menu-panel" id="painel-itens-para-pizza" role="tabpanel" aria-labelledby="aba-itens-para-pizza" hidden>
+        <h2 class="menu-panel-title">Itens para pizza</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Fermento Saf-Instant</span><span class="fill"></span><span class="price">R$ 22,00</span></div><p class="desc">Fermento Saf-Instant para massas de pizza.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Massa para Pizza 400g</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Massa para preparo de pizza, embalagem de 400g.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-12] PAMONHA E CANJICA ========== -->
+      <div class="menu-panel" id="painel-pamonha-e-canjica" role="tabpanel" aria-labelledby="aba-pamonha-e-canjica" hidden>
+        <h2 class="menu-panel-title">Pamonha e canjica</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Pamonha</span><span class="fill"></span><span class="price">R$ 5,00</span></div><p class="desc">Pamonha.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Canjica</span><span class="fill"></span><span class="price">R$ 10,00</span></div><p class="desc">Canjica, 200ml.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-13] PRODUTOS DE LIMPEZA ========== -->
+      <div class="menu-panel" id="painel-produtos-de-limpeza" role="tabpanel" aria-labelledby="aba-produtos-de-limpeza" hidden>
+        <h2 class="menu-panel-title">Produtos de limpeza</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Água Sanitária M.R. Brilho 5L</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Água sanitária M.R. Brilho, embalagem de 5 litros.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Limpador Perfumado M.R. Brilho Floral</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Limpador perfumado M.R. Brilho, fragrância floral.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Limpador Perfumado M.R. Brilho Herbal 5L</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Limpador perfumado M.R. Brilho, fragrância herbal, embalagem de 5 litros.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Limpador Perfumado M.R. Brilho Lavanda 5L</span><span class="fill"></span><span class="price">R$ 20,00</span></div><p class="desc">Limpador perfumado M.R. Brilho, fragrância lavanda, embalagem de 5 litros.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-14] HOSPEDAGEM ========== -->
+      <div class="menu-panel" id="painel-hospedagem" role="tabpanel" aria-labelledby="aba-hospedagem" hidden>
+        <h2 class="menu-panel-title">Hospedagem</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Hospedagem</span><span class="fill"></span><span class="price">R$ 80,00</span></div><p class="desc">Serviço de hospedagem.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== [ABA-15] DESTAQUES E OFERTAS – BLACK NOVEMBER ========== -->
+      <!-- TEMPORÁRIA: apague este painel quando a campanha Black November terminar (e o botão da aba). -->
+      <div class="menu-panel" id="painel-black-november" role="tabpanel" aria-labelledby="aba-black-november" hidden>
+        <h2 class="menu-panel-title">Destaques e ofertas: Black November</h2>
+        <div class="menu-group">
+          <div class="menu-list">
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango Pequeno</span><span class="fill"></span><span class="price">R$ 15,00</span></div><p class="desc">Filé de frango em porção pequena.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Coca-Cola Zero Lata</span><span class="fill"></span><span class="price">R$ 6,00</span></div><p class="desc">Coca-Cola Zero lata 350ml.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Filé de Frango</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Filé de frango.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Frango Assado</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Frango assado.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Mussarela G</span><span class="fill"></span><span class="price">R$ 35,00</span></div><p class="desc">Pizza grande de mussarela, tomate e orégano.</p></div>
+            <div class="menu-item"><div class="menu-item-row"><span class="name">Carne Guisada</span><span class="fill"></span><span class="price">R$ 18,00</span></div><p class="desc">Carne guisada.</p></div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Chamada para delivery (abre o WhatsApp com mensagem pronta) -->
+    <div class="menu-delivery reveal">
+      <div>
+        <strong>Peça já o seu delivery</strong>
+        <p>Não quer sair de casa? A gente leva até você.</p>
+      </div>
+      <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20um%20pedido%20de%20delivery." class="btn btn--whats">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+        Pedir pelo WhatsApp
+      </a>
+    </div>
+
+    <!-- Aviso de rodapé do cardápio -->
+    <p class="menu-note reveal" style="color:var(--cream-soft);">* Cardápio e preços sujeitos a alteração. Consulte disponibilidade.</p>
+  </div>
+</section>
+
+<!-- [PAG-4.3] FAIXA DE CHAMADA (CTA) -->
+<section class="cta-band">
+  <div class="brick-texture"></div>
+  <div class="container" style="position:relative;">
+    <h2 class="reveal">Está com fome?</h2>
+    <p class="reveal">Não precisa continuar procurando por restaurante em Caetés. Seu próximo prato pode estar a poucos minutos daqui.</p>
+    <div class="btn-row reveal">
+      <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20conhecer%20o%20Deus%20%C3%A9%20Fiel." class="btn btn--whats"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg> Quero conhecer</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== [HTML-05] RODAPÉ: aparece em todas as páginas ===== -->
+<footer>
+  <!-- Parte de cima do rodapé: marca + 3 colunas -->
+  <div class="container foot-top">
+    <!-- Coluna: marca e texto de apresentação -->
+    <div class="foot-brand">
+      <span class="brand-top" style="font-size:1.4rem;">Restaurante Deus é Fiel</span>
+      <p><strong style="color:var(--cream);">Boa comida. Bons momentos. Em Caetés.</strong></p>
+      <p>O Restaurante Deus é Fiel é uma opção para quem procura um lugar para comer em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
+    </div>
+    <!-- Coluna: Contato -->
+    <div class="foot-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="https://wa.me/558796290461?text=Ol%C3%A1%21">WhatsApp</a></li>
+        <li><a href="tel:+558796290461" style="color:var(--cream-soft);">+55 87 9629-0461</a></li>
+      </ul>
+    </div>
+    <!-- Coluna: Redes sociais -->
+    <div class="foot-col">
+      <h4>Redes sociais</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener">&#64;restauranteehoteldeusefiel</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener">Google Maps</a></li>
+      </ul>
+    </div>
+    <!-- Coluna: Endereço -->
+    <div class="foot-col">
+      <h4>Endereço</h4>
+      <ul>
+        <li style="color:var(--cream-soft);">R. Dom José Adélino Dantas</li>
+        <li style="color:var(--cream-soft);">Caetés - PE, 55360-000</li>
+      </ul>
+    </div>
+  </div>
+  <!-- Linha final do rodapé: direitos reservados (troque o ano se precisar) -->
+  <div class="container foot-bottom">
+    <span>© 2026 Restaurante Deus é Fiel. Todos os direitos reservados.</span>
+    <span>Feito com carinho em Caetés, PE</span>
+  </div>
+</footer>
+
+<!-- ===== [HTML-06] BOTÃO FLUTUANTE DO WHATSAPP (só celular/tablet; no desktop o botão fica no menu lateral) ===== -->
+<a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="whats-float" aria-label="Reservar pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+</a>
+
+<!-- ===== Comportamentos do site (menu, progresso, animações, abas): assets/js/main.js ===== -->
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>

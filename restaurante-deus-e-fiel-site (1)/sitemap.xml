@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lista de páginas para o Google. Ao criar uma página nova, adicione um bloco <url> aqui. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/sobre/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/delicias/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/cardapio/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/depoimentos/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/localizacao/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://restaurante-deus-fiel.vercel.app/faq/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+</urlset>

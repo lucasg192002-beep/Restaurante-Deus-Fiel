@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+==============================================================================
+  RESTAURANTE DEUS É FIEL — PÁGINA DELÍCIAS — URL: /delicias/
+  Site estático: cada página é uma pasta com um index.html. Arquivos compartilhados:
+    assets/css/style.css .... todos os estilos ([CSS-01..25])
+    assets/js/main.js ....... menu, progresso, animações, abas do cardápio ([JS-01..05])
+    assets/img/ ............. fotos do banner e do salão
+  Estrutura deste arquivo: [HEAD] informações da página (título, descrição, canonical)
+    [HTML-01..04] barra de progresso, barra superior, menu lateral (iguais em todas as páginas)
+    [PAG-3] conteúdo desta página · [HTML-05..06] rodapé e botão flutuante do WhatsApp
+  Padrão: todo bloco novo ganha um comentário dizendo o que é e como editar.
+==============================================================================
+-->
+<html lang="pt-BR" class="no-js-fallback">
+<head>
+<!-- ===== [HEAD] INFORMAÇÕES DESTA PÁGINA (únicas em cada página: título, descrição e endereço canônico) ===== -->
+<!-- Codificação de caracteres (acentos). Não mexer. -->
+<meta charset="UTF-8">
+<!-- Faz o site se ajustar à tela do celular. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Cor da barra do navegador no celular. -->
+<meta name="theme-color" content="#1c0f09">
+<!-- Título da aba do navegador e do resultado no Google (exclusivo desta página). -->
+<title>Delícias da Casa | Restaurante Deus é Fiel em Caetés - PE</title>
+<!-- Texto que aparece no Google embaixo do título (exclusivo desta página, ideal até ~160 caracteres). -->
+<meta name="description" content="Conheça as delícias e especialidades do Restaurante Deus é Fiel, em Caetés - PE: pratos preparados com cuidado para todos os momentos.">
+<!-- Endereço oficial desta página (absoluto): evita que o Google trate variações da URL como páginas diferentes. -->
+<link rel="canonical" href="https://restaurante-deus-fiel.vercel.app/delicias/">
+<!-- Permite que o Google indexe a página e siga os links dela. -->
+<meta name="robots" content="index, follow">
+<!-- Avisa ao CSS que o JavaScript está ativo (troca "no-js-fallback" por "js"). Sem JS, o conteúdo aparece normalmente. -->
+<script>document.documentElement.className='js';</script>
+<!-- Acelera o carregamento das fontes do Google (as duas linhas abaixo). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fontes do site: Fraunces (títulos) e Manrope (textos). -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Estilos compartilhados por todas as páginas ([CSS-01..25]). -->
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- ===== [HTML-01] BARRA DE PROGRESSO DE ROLAGEM (largura controlada pelo JS, ver [JS-02] em assets/js/main.js) ===== -->
+<div class="progress" id="progressBar"></div>
+
+<!-- ===== [HTML-02] BARRA SUPERIOR (só celular/tablet): botão do menu, logo e WhatsApp ===== -->
+<header class="topbar">
+  <!-- Botão ☰ que abre o menu lateral (ver [JS-01]) -->
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <!-- Logo: leva para a página inicial (/) -->
+  <a href="/" class="brand">
+    <span class="brand-top">Deus é Fiel</span>
+    <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+  </a>
+  <!-- Botão do WhatsApp (reserva) -->
+  <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="icon-btn whats-topbar" aria-label="Reservar pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+  </a>
+</header>
+
+<!-- ===== [HTML-03] FUNDO ESCURO atrás do menu lateral (celular/tablet) ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===== [HTML-04] MENU LATERAL: gaveta no celular/tablet, coluna fixa no desktop ===== -->
+<aside class="sidebar" id="sidebar">
+  <!-- Topo do menu: logo + botão × de fechar -->
+  <div class="sidebar-head">
+    <a href="/" class="brand">
+      <span class="brand-top">Deus é Fiel</span>
+      <span class="brand-bottom">RESTAURANTE, CAETÉS PE</span>
+    </a>
+    <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">×</button>
+  </div>
+  <!-- Links das páginas: cada um leva a uma página de verdade (URL própria). O link da página aberta recebe class="is-active" e aria-current="page".
+       Este menu se repete em todos os arquivos .html: ao mudar um link, mude nos 7 arquivos (Ctrl+F no texto do link). -->
+  <nav class="sidebar-nav" aria-label="Menu principal">
+      <a href="/sobre/">Sobre</a>
+      <a href="/delicias/" class="is-active" aria-current="page">Delícias</a>
+      <a href="/cardapio/">Cardápio</a>
+      <a href="/depoimentos/">Depoimentos</a>
+      <a href="/localizacao/">Localização</a>
+      <a href="/faq/">Dúvidas</a>
+  </nav>
+  <!-- Botão verde do WhatsApp (reservas) -->
+  <a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="btn btn--whats btn--full sidebar-cta">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+    Reservar pelo WhatsApp
+  </a>
+  <!-- Instagram e Google Maps numa linha só, em movimento horizontal (letreiro). 
+       O 2º grupo é uma cópia do 1º (aria-hidden) para o movimento nunca ter "buraco". Se mudar um link, mude nos dois grupos. -->
+  <div class="sidebar-social" aria-label="Redes e localização">
+    <div class="marquee-track">
+      <span class="marquee-group">
+        <a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener">&#64;restauranteehoteldeusefiel</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener">Google Maps</a>
+      </span>
+      <span class="marquee-group" aria-hidden="true">
+        <a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener" tabindex="-1">&#64;restauranteehoteldeusefiel</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener" tabindex="-1">Google Maps</a>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<!-- ==========================================================================
+     [PAG-3] PÁGINA DELÍCIAS — URL: /delicias/
+     ========================================================================== -->
+<main class="page" id="view-delicias">
+<!-- [PAG-3.1] CABEÇALHO DA PÁGINA -->
+<section class="page-hero">
+  <div class="brick-texture"></div>
+  <div class="container">
+    <span class="eyebrow reveal">Delícias da casa</span>
+    <h1 class="reveal">Sabor que você reconhece no primeiro prato</h1>
+    <p class="reveal">Nosso cardápio foi pensado para quem não abre mão de sabor, qualidade e uma comida bem preparada.</p>
+  </div>
+</section>
+
+<!-- [PAG-3.2] "O QUE NOS DEFINE": 3 cartões (copie um <div class="card reveal"> para adicionar) -->
+<section class="section--dark section-pad">
+  <div class="container">
+    <span class="eyebrow reveal">O que nos define</span>
+    <h2 class="reveal">Cuidado do primeiro ao último detalhe</h2>
+    <div class="grid-3">
+      <!-- Cartão: Pratos preparados com cuidado (sem ícone) -->
+      <div class="card reveal">
+        <h3>Pratos preparados com cuidado</h3>
+        <p>Ingredientes selecionados, preparo cuidadoso e atenção aos detalhes.</p>
+      </div>
+      <!-- Cartão: Para todos os momentos -->
+      <div class="card reveal">
+        <h3>Para todos os momentos</h3>
+        <p>Um almoço especial, um jantar tranquilo ou aquele encontro que merece um bom lugar.</p>
+      </div>
+      <!-- Cartão: Sabor que combina com Caetés -->
+      <div class="card reveal">
+        <h3>Sabor que combina com Caetés</h3>
+        <p>Uma experiência gastronômica para quem vive, trabalha ou está passando pela cidade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- [PAG-3.3] MAIS PEDIDOS (fundo claro)
+     ATENÇÃO: os 4 pratos abaixo e seus preços são EXEMPLOS do site original e NÃO estão no cardápio real ([PAG-4]).
+     Troque pelos pratos mais pedidos de verdade. Cada prato é um bloco <div class="dish reveal">. -->
+<section class="section--light section-pad">
+  <div class="container">
+    <span class="eyebrow reveal">Os favoritos da casa</span>
+    <h2 class="reveal">Mais Pedidos</h2>
+    <p class="lead reveal" style="color:var(--ink-soft); max-width:60ch; margin-top:16px;">Os pratos que mais saem da nossa cozinha e que costumam virar pedido certo na próxima visita.</p>
+
+    <div class="grid-4">
+      <!-- Prato de exemplo: Costela no bafo -->
+      <div class="dish reveal">
+        <div style="flex:1">
+          <span class="tag-favorito">Mais pedido</span>
+          <div class="dish-name"><h3>Costela no bafo</h3><span class="price">R$ 68</span></div>
+          <p>Cozida lentamente até soltar do osso, servida com farofa de banana e vinagrete.</p>
+        </div>
+      </div>
+      <!-- Prato de exemplo: Baião de dois com carne de sol -->
+      <div class="dish reveal">
+        <div style="flex:1">
+          <span class="tag-favorito">Clássico nordestino</span>
+          <div class="dish-name"><h3>Baião de dois com carne de sol</h3><span class="price">R$ 52</span></div>
+          <p>Arroz e feijão-de-corda cremosos, queijo coalho e carne de sol na brasa.</p>
+        </div>
+      </div>
+      <!-- Prato de exemplo: Galinha caipira ao molho pardo -->
+      <div class="dish reveal">
+        <div style="flex:1">
+          <span class="tag-favorito">Comida de família</span>
+          <div class="dish-name"><h3>Galinha caipira ao molho pardo</h3><span class="price">R$ 58</span></div>
+          <p>Receita de panela, acompanhada de arroz branco, pirão e batata frita.</p>
+        </div>
+      </div>
+      <!-- Prato de exemplo: Bolo de rolo -->
+      <div class="dish reveal">
+        <div style="flex:1">
+          <span class="tag-favorito">Doce da casa</span>
+          <div class="dish-name"><h3>Bolo de rolo</h3><span class="price">R$ 16</span></div>
+          <p>A sobremesa símbolo de Pernambuco, feita com massa fina e goiabada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row reveal" style="margin-top:44px;">
+      <a href="/cardapio/" class="btn btn--primary">Ver cardápio completo</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== [HTML-05] RODAPÉ: aparece em todas as páginas ===== -->
+<footer>
+  <!-- Parte de cima do rodapé: marca + 3 colunas -->
+  <div class="container foot-top">
+    <!-- Coluna: marca e texto de apresentação -->
+    <div class="foot-brand">
+      <span class="brand-top" style="font-size:1.4rem;">Restaurante Deus é Fiel</span>
+      <p><strong style="color:var(--cream);">Boa comida. Bons momentos. Em Caetés.</strong></p>
+      <p>O Restaurante Deus é Fiel é uma opção para quem procura um lugar para comer em Caetés, Pernambuco, seja para almoço, jantar, encontro com amigos ou momentos em família.</p>
+    </div>
+    <!-- Coluna: Contato -->
+    <div class="foot-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="https://wa.me/558796290461?text=Ol%C3%A1%21">WhatsApp</a></li>
+        <li><a href="tel:+558796290461" style="color:var(--cream-soft);">+55 87 9629-0461</a></li>
+      </ul>
+    </div>
+    <!-- Coluna: Redes sociais -->
+    <div class="foot-col">
+      <h4>Redes sociais</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/restauranteehoteldeusefiel/" target="_blank" rel="noopener">&#64;restauranteehoteldeusefiel</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&query=Restaurante%20Deus%20%C3%A9%20Fiel%2C%20R.%20Dom%20Jos%C3%A9%20Ad%C3%A9lino%20Dantas%2C%20Caet%C3%A9s%20-%20PE%2C%2055360-000" target="_blank" rel="noopener">Google Maps</a></li>
+      </ul>
+    </div>
+    <!-- Coluna: Endereço -->
+    <div class="foot-col">
+      <h4>Endereço</h4>
+      <ul>
+        <li style="color:var(--cream-soft);">R. Dom José Adélino Dantas</li>
+        <li style="color:var(--cream-soft);">Caetés - PE, 55360-000</li>
+      </ul>
+    </div>
+  </div>
+  <!-- Linha final do rodapé: direitos reservados (troque o ano se precisar) -->
+  <div class="container foot-bottom">
+    <span>© 2026 Restaurante Deus é Fiel. Todos os direitos reservados.</span>
+    <span>Feito com carinho em Caetés, PE</span>
+  </div>
+</footer>
+
+<!-- ===== [HTML-06] BOTÃO FLUTUANTE DO WHATSAPP (só celular/tablet; no desktop o botão fica no menu lateral) ===== -->
+<a href="https://wa.me/558796290461?text=Ol%C3%A1%21%20Quero%20fazer%20uma%20reserva." class="whats-float" aria-label="Reservar pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.2 1.6 2.5 4 3.4 1.9.7 2.3.6 2.7.5.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z"/></svg>
+</a>
+
+<!-- ===== Comportamentos do site (menu, progresso, animações, abas): assets/js/main.js ===== -->
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>
