@@ -1,0 +1,749 @@
+/* ==============================================================================
+   RESTAURANTE DEUS É FIEL — ESTILOS DO SITE (assets/css/style.css)
+   Este arquivo é compartilhado por TODAS as páginas (/, /sobre/, /delicias/, ...).
+   Use Ctrl+F e o código entre colchetes para achar cada bloco:
+     [CSS-01..23] Visual do site (cores, tipografia, menu, banner, cardápio, rodapé...)
+     [CSS-24]     Regras para quando o JavaScript está desligado
+     [CSS-25]     Fotos (arquivos em assets/img/)
+   Padrão: todo bloco novo ganha um cabeçalho [CSS-NN] e cada regra um comentário.
+   ============================================================================== */
+/* ==========================================================================
+   [CSS-01] CORES, FONTES E MEDIDAS
+   Para mudar o visual do site inteiro, mude os valores aqui.
+   ========================================================================== */
+:root{
+  /* --- cores --- */
+  --charcoal: #1c0f09;  /* marrom quase preto (fundo escuro principal) */
+  --charcoal-2: #2a1710;  /* marrom escuro, um tom acima (cartões em fundo escuro) */
+  --brick: #6d2019;  /* vermelho-tijolo (títulos em fundo claro, cabeçalhos) */
+  --brick-deep: #431410;  /* tijolo bem escuro (usado em degradês) */
+  --ember: #e2661a;  /* laranja brasa (botões e destaques) */
+  --ember-2: #f0863f;  /* laranja mais claro (início do degradê dos botões) */
+  --gold: #e3a421;  /* dourado (mini-títulos, preços e detalhes) */
+  --paper: #fbf3e6;  /* creme claro (fundo das seções claras) */
+  --paper-2: #f4e7d3;  /* creme um pouco mais escuro */
+  --ink: #2a1810;  /* texto escuro sobre fundo claro */
+  --ink-soft: #6b5646;  /* texto escuro suavizado (parágrafos em fundo claro) */
+  --cream: #f6ecdd;  /* texto claro sobre fundo escuro */
+  --cream-soft: rgba(246,236,221,.72);  /* texto claro suavizado */
+  --line-dark: rgba(246,236,221,.16);  /* linhas finas em fundo escuro */
+  --line-light: rgba(42,24,16,.14);  /* linhas finas em fundo claro */
+  --shadow: 0 20px 40px -20px rgba(20,8,4,.55);  /* sombra dos cartões ao passar o mouse */
+
+  --font-display: "Fraunces", Georgia, serif;  /* fonte dos títulos */
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;  /* fonte dos textos */
+
+  --container: 1120px;  /* largura máxima do conteúdo */
+  --radius: 18px;  /* arredondamento padrão dos cartões */
+  --sidebar-w: 272px;  /* largura do menu lateral (desktop) */
+  --topbar-h: 64px;  /* altura da barra superior (celular/tablet) */
+}
+
+/* ==========================================================================
+   [CSS-02] BASE
+   Padrões gerais da página (reset).
+   ========================================================================== */
+/* Largura e altura passam a incluir borda e espaçamento (evita itens estourando a tela) */
+*,*::before,*::after{ box-sizing:border-box; }
+/* Rolagem suave ao ir para uma âncora */
+html{ scroll-behavior:smooth; }
+/* Fundo, cor do texto e fonte padrão do site inteiro; corta rolagem lateral indesejada */
+body{
+  margin:0;
+  font-family:var(--font-body);
+  color:var(--cream);
+  background:var(--charcoal);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* Trava a rolagem da página enquanto o menu lateral está aberto (celular) */
+body.no-scroll{ overflow:hidden; }
+/* Imagens e ícones nunca passam da largura da tela */
+img,svg{ display:block; max-width:100%; }
+/* Links herdam a cor do texto e não têm sublinhado */
+a{ color:inherit; text-decoration:none; }
+/* Listas sem marcadores e sem recuo */
+ul{ margin:0; padding:0; list-style:none; }
+/* Títulos: fonte dos títulos, sem margem extra */
+h1,h2,h3{ font-family:var(--font-display); margin:0; font-weight:600; line-height:1.08; letter-spacing:-.01em; }
+/* Parágrafos sem margem (o espaçamento é dado em cada bloco) */
+p{ margin:0; }
+/* Caixa central que limita a largura do conteúdo, com respiro nas laterais */
+.container{ max-width:var(--container); margin-inline:auto; padding-inline:22px; }
+/* Acessibilidade: quem desativa animações no aparelho não vê movimentos */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+}
+
+/* ==========================================================================
+   [CSS-03] TIPOGRAFIA
+   Tamanhos dos títulos e textos de destaque.
+   ========================================================================== */
+/* Tamanho do título principal (se adapta à tela) */
+h1{ font-size:clamp(2.3rem, 5.6vw, 4.1rem); }
+/* Tamanho dos títulos de seção */
+h2{ font-size:clamp(1.8rem, 4vw, 2.7rem); }
+/* Tamanho dos títulos menores */
+h3{ font-size:clamp(1.15rem, 2vw, 1.4rem); }
+/* Parágrafo de destaque, um pouco maior */
+.lead{ font-size:clamp(1.05rem, 2vw, 1.25rem); line-height:1.55; }
+/* Mini-título dourado acima dos títulos (ex.: "Sobre nós") */
+.eyebrow{
+  font-family:var(--font-body); font-weight:700; font-size:.8rem;
+  color:var(--gold); letter-spacing:.02em; display:inline-block;
+}
+
+/* ==========================================================================
+   [CSS-04] BOTÕES
+   Laranja = principal, contorno = secundário, verde = WhatsApp.
+   ========================================================================== */
+/* Botão base: formato de pílula, espaçamento e animação */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:15px 26px; border-radius:999px; font-weight:700; font-size:1rem;
+  font-family:var(--font-body); border:2px solid transparent; cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+  white-space:nowrap;
+}
+/* Efeito de "apertar" ao clicar */
+.btn:active{ transform:scale(.97); }
+/* Botão laranja principal (ex.: "Ver cardápio") */
+.btn--primary{
+  background:linear-gradient(135deg, var(--ember-2), var(--ember));
+  color:#25100a; box-shadow:0 14px 30px -12px rgba(226,102,26,.65);
+}
+/* Botão laranja sobe um pouco ao passar o mouse */
+.btn--primary:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -10px rgba(226,102,26,.8); }
+/* Botão só com contorno (secundário) */
+.btn--ghost{ background:transparent; border-color:var(--line-dark); color:var(--cream); }
+/* Contorno fica dourado ao passar o mouse */
+.btn--ghost:hover{ border-color:var(--gold); color:var(--gold); }
+/* Botão de contorno para usar em fundo claro */
+.btn--ghost.on-light{ border-color:var(--line-light); color:var(--ink); }
+/* Contorno fica vermelho-tijolo ao passar o mouse (fundo claro) */
+.btn--ghost.on-light:hover{ border-color:var(--brick); color:var(--brick); }
+/* Botão verde do WhatsApp */
+.btn--whats{ background:#1f7a52; color:#eafff2; box-shadow:0 14px 30px -12px rgba(31,122,82,.7); }
+/* Botão verde sobe um pouco ao passar o mouse */
+.btn--whats:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -10px rgba(31,122,82,.85); }
+/* Tamanho dos ícones dentro dos botões */
+.btn svg{ width:20px; height:20px; flex-shrink:0; }
+/* Linha que agrupa botões e quebra para a linha de baixo em telas pequenas */
+.btn-row{ display:flex; flex-wrap:wrap; gap:14px; }
+/* Botão que ocupa a largura toda */
+.btn--full{ width:100%; }
+
+/* ==========================================================================
+   [CSS-05] MARCA (logo em texto)
+   Usada na barra superior e no menu lateral.
+   ========================================================================== */
+/* Logo em texto: duas linhas empilhadas */
+.brand{ display:flex; flex-direction:column; line-height:1; gap:2px; }
+/* Linha de cima do logo ("Deus é Fiel") */
+.brand-top{ font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:var(--cream); }
+/* Linha de baixo do logo ("RESTAURANTE, CAETÉS PE") */
+.brand-bottom{ font-size:.66rem; letter-spacing:.07em; color:var(--gold); font-weight:700; }
+
+/* ==========================================================================
+   [CSS-06] BARRA SUPERIOR (celular/tablet)
+   No desktop ela some e o menu lateral fica fixo.
+   ========================================================================== */
+/* Barra fixa no topo (celular/tablet) com menu, logo e WhatsApp */
+.topbar{
+  position:fixed; top:0; left:0; right:0; z-index:80; height:var(--topbar-h);
+  display:flex; align-items:center; justify-content:space-between; gap:10px; padding-inline:14px;
+  background:linear-gradient(180deg, rgba(28,15,9,.94), rgba(28,15,9,.74));
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line-dark);
+}
+/* Centraliza o logo na barra superior */
+.topbar .brand{ align-items:center; text-align:center; }
+/* Botões quadrados da barra superior (menu e WhatsApp) */
+.menu-btn, .icon-btn{
+  width:44px; height:44px; border-radius:12px; border:1px solid var(--line-dark);
+  background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+}
+/* Tamanho e cor dos ícones desses botões */
+.menu-btn svg, .icon-btn svg{ width:22px; height:22px; color:var(--cream); }
+/* Botão redondo e verde do WhatsApp na barra superior */
+.icon-btn.whats-topbar{ border-radius:50%; background:#1f7a52; border-color:transparent; }
+/* Cor do ícone do WhatsApp na barra superior */
+.icon-btn.whats-topbar svg{ color:#eafff2; }
+/* Barra fininha no topo que mostra quanto da página já foi rolado (largura controlada pelo JS) */
+.progress{ position:fixed; top:0; left:0; height:3px; z-index:96; background:linear-gradient(90deg, var(--gold), var(--ember)); width:0%; }
+
+/* ==========================================================================
+   [CSS-07] MENU LATERAL
+   Gaveta de navegação (celular) / coluna fixa (desktop).
+   ========================================================================== */
+/* Fundo escuro atrás do menu lateral no celular (invisível até o menu abrir) */
+.sidebar-overlay{
+  position:fixed; inset:0; z-index:90; background:rgba(10,5,3,.55);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+/* Mostra o fundo escuro quando o menu abre (classe colocada pelo JS) */
+.sidebar-overlay.is-visible{ opacity:1; pointer-events:auto; }
+/* Menu lateral: escondido à esquerda no celular, fixo no desktop */
+.sidebar{
+  position:fixed; top:0; left:0; height:100dvh; width:min(var(--sidebar-w), 84vw); z-index:95;
+  background:linear-gradient(190deg, var(--charcoal), var(--brick-deep) 150%);
+  border-right:1px solid var(--line-dark);
+  display:flex; flex-direction:column; padding:22px 20px 24px;
+  transform:translateX(-100%); transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  overflow-y:auto;
+}
+/* Menu lateral aberto (classe colocada pelo JS) */
+.sidebar.is-open{ transform:translateX(0); }
+/* Topo do menu lateral: logo + botão de fechar */
+.sidebar-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+/* Botão × que fecha o menu */
+.sidebar-close{
+  width:38px; height:38px; border-radius:10px; border:1px solid var(--line-dark); background:transparent;
+  color:var(--cream); font-size:1.3rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+/* Lista de links do menu */
+.sidebar-nav{ display:flex; flex-direction:column; gap:4px; margin:28px 0 18px; }
+/* Cada link do menu */
+.sidebar-nav a{
+  padding:13px 14px; border-radius:10px; color:var(--cream-soft); font-weight:600; font-size:.98rem;
+  transition:background .2s ease, color .2s ease;
+}
+/* Link do menu ao passar o mouse */
+.sidebar-nav a:hover{ background:rgba(246,236,221,.07); color:var(--cream); }
+/* Link da página atual, destacado (classe colocada pelo JS) */
+.sidebar-nav a.is-active{ background:rgba(226,102,26,.18); color:var(--gold); }
+/* Empurra o botão do WhatsApp para o fim do menu */
+.sidebar-cta{ margin-top:auto; }
+/* Faixa do Instagram e do Maps no fim do menu: uma linha só, o que passar da largura fica escondido (letreiro) */
+.sidebar-social{ margin-top:18px; font-size:.85rem; overflow:hidden; white-space:nowrap;
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+/* Trilho que se move para a esquerda sem parar (a velocidade é o tempo de 14s: aumente para ficar mais lento) */
+.marquee-track{ display:flex; width:max-content; animation:marquee 14s linear infinite; }
+/* Pausa o movimento ao passar o mouse ou tocar, para dar tempo de clicar */
+.sidebar-social:hover .marquee-track, .sidebar-social:focus-within .marquee-track{ animation-play-state:paused; }
+/* Cada grupo = os dois links lado a lado, com espaço no fim igual ao espaço entre eles */
+.marquee-group{ display:flex; gap:28px; padding-right:28px; flex-shrink:0; }
+/* Move exatamente a largura de um grupo (-50% do trilho) e recomeça: efeito contínuo */
+@keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+/* Quem pediu menos movimento no aparelho vê a faixa parada */
+@media (prefers-reduced-motion:reduce){ .marquee-track{ animation:none; } }
+/* Cor dos links sociais */
+.sidebar-social a{ color:var(--cream-soft); }
+/* Link social fica dourado ao passar o mouse */
+.sidebar-social a:hover{ color:var(--gold); }
+
+/* ==========================================================================
+   [CSS-08] ÁREA DAS PÁGINAS E AJUSTE PARA DESKTOP
+   ========================================================================== */
+/* Espaço no topo para o conteúdo não ficar escondido atrás da barra superior */
+main.page{ padding-top:var(--topbar-h); min-height:60vh; }
+/* DESKTOP (telas a partir de 1024px): some a barra superior, o menu lateral fica fixo à esquerda e o conteúdo é empurrado para a direita (o botão flutuante do WhatsApp some pela regra em [CSS-22]) */
+@media (min-width:1024px){
+  .topbar{ display:none; }
+  .sidebar-overlay{ display:none; }
+  .sidebar{ transform:none; border-right:1px solid var(--line-dark); }
+  .sidebar-close{ display:none; }
+  main.page{ margin-left:var(--sidebar-w); padding-top:0; }
+  footer{ margin-left:var(--sidebar-w); }
+}
+
+/* ==========================================================================
+   [CSS-09] SEÇÕES
+   Fundos claro/escuro, espaçamento e animação de entrada.
+   ========================================================================== */
+/* Espaçamento vertical padrão das seções */
+.section-pad{ padding-block:clamp(56px, 10vh, 108px); }
+/* Seção com fundo escuro */
+.section--dark{ background:var(--charcoal); color:var(--cream); }
+/* Seção com fundo claro (papel) */
+.section--light{ background:var(--paper); color:var(--ink); }
+/* Mini-título fica vermelho-tijolo em fundo claro */
+.section--light .eyebrow{ color:var(--brick); }
+/* Estado inicial da animação de entrada: invisível e um pouco mais embaixo. Só vale quando o JavaScript está ativo (a classe "js" é colocada no <html> pelo <head>); sem JS o texto aparece normalmente */
+.js .reveal{ opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+/* Estado final: aparece subindo (classe colocada pelo JS quando o item entra na tela) */
+.js .reveal.is-visible{ opacity:1; transform:none; }
+
+/* ==========================================================================
+   [CSS-10] DECORAÇÃO
+   Textura de tijolos e grão.
+   ========================================================================== */
+/* Camada decorativa com padrão de tijolos */
+.brick-texture{
+  position:absolute; inset:0; opacity:.14; pointer-events:none;
+  background-image:
+    linear-gradient(335deg, var(--cream) 22px, transparent 22px),
+    linear-gradient(155deg, var(--cream) 22px, transparent 22px),
+    linear-gradient(335deg, var(--cream) 22px, transparent 22px),
+    linear-gradient(155deg, var(--cream) 22px, transparent 22px);
+  background-size:52px 52px;
+  background-position:0 2px, 4px 10px, 26px 28px, 30px 36px;
+  mix-blend-mode:overlay;
+}
+/* Camada decorativa de grão (ruído) sobre o banner */
+.grain{
+  position:absolute; inset:0; pointer-events:none; opacity:.5; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   [CSS-11] BANNER DA PÁGINA INICIAL "/" (hero)
+   ========================================================================== */
+/* Banner da página inicial: tela quase cheia, degradês escuros por cima da foto de fundo (a foto está no bloco [IMG-01]) */
+.hero{
+  position:relative; min-height:88svh; display:flex; align-items:center; overflow:hidden;
+  background-image:
+    linear-gradient(100deg, rgba(17,9,5,.95) 0%, rgba(17,9,5,.86) 34%, rgba(17,9,5,.5) 64%, rgba(17,9,5,.22) 100%),
+    linear-gradient(0deg, rgba(17,9,5,.88) 0%, rgba(17,9,5,0) 38%),
+    linear-gradient(120deg, rgba(109,32,25,.35), rgba(226,102,26,.12)),
+    var(--img-hero);
+  background-size:cover; background-position:center;
+}
+/* Brilho quente que acompanha o mouse sobre o banner (movido pelo JS) */
+.hero-glow{
+  position:absolute; inset:0; z-index:1; pointer-events:none; mix-blend-mode:soft-light;
+  background:radial-gradient(420px 420px at var(--mx,25%) var(--my,45%), rgba(240,168,60,.55), transparent 65%);
+  transition:background-position .12s ease;
+}
+/* Espaçamento interno do banner */
+.hero-inner{ position:relative; z-index:2; padding-block:56px; }
+/* Largura máxima do texto do banner */
+.hero-copy{ max-width:640px; }
+/* Espaço abaixo do mini-título do banner */
+.hero-copy .eyebrow{ margin-bottom:18px; }
+/* Título do banner, com sombra para ler bem sobre a foto */
+.hero h1{ margin-bottom:20px; text-shadow:0 2px 24px rgba(0,0,0,.35); }
+/* Palavra em destaque no título: itálico dourado */
+.hero h1 em{ font-style:italic; color:var(--gold); }
+/* Texto de apresentação do banner */
+.hero-lead{ color:var(--cream-soft); max-width:52ch; margin-bottom:10px; }
+/* Frase "Estamos em Caetés, Pernambuco" */
+.hero-place{ font-weight:700; color:var(--cream); margin-block:18px 26px; }
+/* Nome do lugar em dourado */
+.hero-place span{ color:var(--gold); }
+/* Brasas que sobem no banner (posições definidas no HTML) */
+.ember-particle{
+  position:absolute; bottom:0; border-radius:50%; background:var(--ember-2); z-index:1;
+  box-shadow:0 0 8px 2px rgba(226,102,26,.7); opacity:0; animation:rise 6s linear infinite;
+}
+/* Animação das brasas subindo */
+@keyframes rise{
+  0%{ transform:translateY(0) translateX(0); opacity:0; }
+  12%{ opacity:.85; }
+  100%{ transform:translateY(-280px) translateX(var(--drift,20px)); opacity:0; }
+}
+/* Animação do texto do banner aparecendo da esquerda para a direita */
+@keyframes reveal-ltr{
+  0%{ clip-path:inset(0 100% 0 0); opacity:0; }
+  100%{ clip-path:inset(0 0 0 0); opacity:1; }
+}
+/* Liga a animação acima ao texto do banner */
+.hero-copy{ animation:reveal-ltr 1.15s cubic-bezier(.16,1,.3,1) both; }
+
+/* ==========================================================================
+   [CSS-12] CABEÇALHO DAS PÁGINAS INTERNAS
+   ========================================================================== */
+/* Cabeçalho vermelho das páginas internas */
+.page-hero{
+  background:linear-gradient(175deg, var(--brick-deep), var(--brick) 60%, var(--charcoal));
+  padding-block:52px 42px; position:relative; overflow:hidden;
+}
+/* Mantém o conteúdo acima da textura de tijolos */
+.page-hero .container{ position:relative; }
+/* Tamanho do título das páginas internas */
+.page-hero h1{ margin-top:10px; font-size:clamp(2rem, 5.4vw, 3rem); }
+/* Subtítulo das páginas internas */
+.page-hero p{ color:var(--cream-soft); margin-top:14px; max-width:60ch; }
+
+/* ==========================================================================
+   [CSS-13] PÁGINA SOBRE
+   ========================================================================== */
+/* Grade do texto da página Sobre */
+.about-grid{ display:grid; gap:38px; }
+/* Largura máxima do texto, para leitura confortável */
+.about-text{ max-width:64ch; }
+/* Parágrafos do texto Sobre */
+.about-text p{ color:var(--ink-soft); margin-top:16px; line-height:1.75; }
+/* Frase em destaque com barra dourada à esquerda */
+.pull{
+  font-family:var(--font-display); font-size:clamp(1.3rem,2.4vw,1.7rem); font-style:italic;
+  color:var(--brick); border-left:3px solid var(--gold); padding-left:20px; margin-top:26px; line-height:1.4;
+}
+/* Frase em destaque fica dourada em fundo escuro */
+.section--dark .pull{ color:var(--gold); }
+/* Bloco "A experiência": texto de um lado e foto do outro */
+.moments{ display:grid; gap:40px; align-items:center; }
+/* Telas largas: texto e foto ficam lado a lado (2 colunas) */
+@media (min-width:900px){ .moments{ grid-template-columns:1fr 1fr; } }
+/* Moldura da foto do salão (a foto está no bloco [IMG-02]); mantém a proporção da imagem original */
+.moments-visual{
+  width:100%; aspect-ratio:736 / 504; min-height:280px;
+  border-radius:24px; border:1px solid var(--line-dark);
+  position:relative; overflow:hidden;
+  background-image:var(--img-sobre); background-size:cover; background-position:center;
+}
+/* Parágrafos do texto ao lado da foto */
+.moments-text p{ color:var(--cream-soft); margin-top:16px; line-height:1.75; }
+/* Frase final em destaque ("Porque comida boa alimenta...") */
+.moments-punch{ margin-top:26px; font-family:var(--font-display); font-size:clamp(1.25rem,2.2vw,1.6rem); }
+/* Cada linha da frase fica em um bloco separado */
+.moments-punch span{ display:block; }
+/* Segunda linha em dourado e itálico */
+.moments-punch .s2{ color:var(--gold); font-style:italic; }
+
+/* ==========================================================================
+   [CSS-14] GRADES E CARTÕES
+   Cartões com ícone (hoje usados só como base dos cartões; a página Delícias não usa mais ícones).
+   ========================================================================== */
+/* Grade de 3 colunas de cartões (1 coluna no celular) */
+.grid-3{ display:grid; gap:22px; margin-top:44px; }
+/* Grade de 4 colunas de cartões (1 coluna no celular) */
+.grid-4{ display:grid; gap:22px; margin-top:44px; }
+/* Tablet: .grid-3 passa para 3 colunas e .grid-4 para 2 */
+@media (min-width:720px){ .grid-3{ grid-template-columns:repeat(3,1fr); } .grid-4{ grid-template-columns:repeat(2,1fr); } }
+/* Desktop: .grid-4 passa para 4 colunas */
+@media (min-width:1000px){ .grid-4{ grid-template-columns:repeat(4,1fr); } }
+/* Cartão com ícone, título e texto (sobe ao passar o mouse) */
+.card{
+  background:var(--charcoal-2); border:1px solid var(--line-dark); border-radius:var(--radius);
+  padding:30px 26px; transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+/* Cartão branco quando está em seção clara */
+.section--light .card{ background:#fff; border-color:var(--line-light); }
+/* Cartão sobe e ganha sombra e borda dourada ao passar o mouse */
+.card:hover{ transform:translateY(-6px); box-shadow:var(--shadow); border-color:var(--gold); }
+/* Quadradinho colorido que guarda os ícones */
+.badge{
+  width:54px; height:54px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg, var(--ember-2), var(--brick)); margin-bottom:18px;
+  transition:box-shadow .35s ease, transform .35s ease;
+}
+/* Tamanho do ícone dentro do quadradinho */
+.badge svg{ width:26px; height:26px; color:var(--cream); }
+/* Ícone dá uma leve girada quando o cartão recebe o mouse */
+.card:hover .badge{ box-shadow:0 0 0 6px rgba(226,102,26,.18); transform:scale(1.06) rotate(-3deg); }
+/* Título do cartão */
+.card h3{ margin-bottom:10px; }
+/* Texto do cartão */
+.card p{ color:var(--cream-soft); line-height:1.6; }
+/* Texto do cartão em seção clara */
+.section--light .card p{ color:var(--ink-soft); }
+
+/* ==========================================================================
+   [CSS-15] MAIS PEDIDOS (página Delícias)
+   ========================================================================== */
+/* Cartão de prato da seção "Mais pedidos" (página Delícias) */
+.dish{
+  display:flex; gap:18px; align-items:flex-start; padding:22px; border-radius:var(--radius);
+  background:var(--charcoal-2); border:1px solid var(--line-dark); transition:transform .3s ease, border-color .3s ease;
+}
+/* Cartão de prato branco em seção clara */
+.section--light .dish{ background:#fff; border-color:var(--line-light); }
+/* Cartão de prato sobe ao passar o mouse */
+.dish:hover{ transform:translateY(-4px); border-color:var(--gold); }
+/* Linha com nome do prato à esquerda e preço à direita */
+.dish-name{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+/* Tamanho do nome do prato */
+.dish-name h3{ font-size:1.08rem; }
+/* Preço, em dourado (usado em Delícias e no Cardápio) */
+.price{ color:var(--gold); font-weight:800; font-family:var(--font-body); white-space:nowrap; }
+/* Preço fica vermelho-tijolo em seção clara */
+.section--light .price{ color:var(--brick); }
+/* Descrição do prato */
+.dish p{ color:var(--cream-soft); margin-top:6px; font-size:.94rem; line-height:1.55; }
+/* Descrição do prato em seção clara */
+.section--light .dish p{ color:var(--ink-soft); }
+/* Etiqueta dourada em cima do prato (ex.: "Mais pedido") */
+.tag-favorito{
+  display:inline-block; font-size:.68rem; font-weight:800; color:var(--charcoal); background:var(--gold);
+  padding:3px 9px; border-radius:999px; margin-bottom:8px;
+}
+
+/* ==========================================================================
+   [CSS-16] CARDÁPIO
+   As regras das abas, grupos e pratos estão logo abaixo.
+   ========================================================================== */
+/* Aviso pequeno em itálico ("preços sujeitos a alteração") */
+.menu-note{ margin-top:20px; font-size:.85rem; font-style:italic; }
+
+/* Seção do cardápio: sem espaço no topo, porque a faixa de abas fica logo abaixo do cabeçalho vermelho */
+.section--menu{ padding-block:0 clamp(56px, 10vh, 108px); }
+
+/* Faixa que guarda as abas. No celular/tablet ela fica FIXA embaixo da barra superior enquanto a pessoa rola */
+.menu-tabs-wrap{
+  position:sticky; top:var(--topbar-h); z-index:40;
+  background:rgba(28,15,9,.96); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-dark);
+}
+
+/* Lista de abas: uma linha que rola para o lado (a ponta direita esvanece para mostrar que tem mais abas) */
+.menu-tabs{
+  display:flex; gap:8px; overflow-x:auto; scroll-behavior:smooth; scrollbar-width:none;
+  margin-inline:-22px; padding:12px 44px 12px 22px;
+  -webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+          mask-image:linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+}
+.menu-tabs::-webkit-scrollbar{ display:none; } /* esconde a barra de rolagem no Chrome/Safari */
+
+/* Cada aba é um botão em formato de pílula */
+.menu-tab{
+  flex:0 0 auto; cursor:pointer; white-space:nowrap;
+  padding:10px 16px; border-radius:999px;
+  border:1px solid var(--line-dark); background:transparent; color:var(--cream-soft);
+  font:700 .9rem var(--font-body);
+  transition:background .2s ease, color .2s ease, border-color .2s ease;
+}
+.menu-tab:hover{ border-color:var(--gold); color:var(--cream); } /* destaque ao passar o mouse */
+.menu-tab[aria-selected="true"]{ /* aba aberta no momento (atributo trocado pelo JS) */
+  background:linear-gradient(135deg, var(--ember-2), var(--ember)); border-color:transparent; color:#25100a;
+}
+.menu-tab--promo{ border-color:var(--gold); color:var(--gold); } /* aba de campanha (Black November) */
+
+/* No desktop não existe barra superior: as abas quebram em várias linhas e não ficam fixas */
+@media (min-width:1024px){
+  .menu-tabs-wrap{ position:static; background:none; backdrop-filter:none; border-bottom:0; padding-top:36px; }
+  .menu-tabs{ flex-wrap:wrap; overflow:visible; margin-inline:0; padding:0 0 4px; -webkit-mask-image:none; mask-image:none; }
+}
+
+/* Painel de uma aba (só o painel da aba aberta aparece) */
+.menu-panel{ padding-top:34px; scroll-margin-top:calc(var(--topbar-h) + 72px); }
+.menu-panel[hidden]{ display:none; } /* garante que painéis fechados fiquem escondidos */
+@media (min-width:1024px){ .menu-panel{ scroll-margin-top:16px; } }
+.menu-panel-title{ font-size:clamp(1.7rem, 3.6vw, 2.3rem); } /* título grande da aba */
+
+/* Grupo dentro do painel (ex.: "Marmitas tradicionais") */
+.menu-group{ margin-top:30px; }
+.menu-group-title{ /* título do grupo, com linha dourada embaixo */
+  color:var(--gold); font-size:clamp(1.15rem, 2vw, 1.4rem);
+  padding-bottom:10px; margin-bottom:4px; border-bottom:2px solid var(--gold); display:inline-block;
+}
+
+/* Lista de pratos: 1 coluna no celular, 2 colunas em tela larga */
+.menu-list{ display:grid; column-gap:44px; }
+@media (min-width:900px){ .menu-list{ grid-template-columns:1fr 1fr; } }
+
+/* Um prato: linha de cima (nome ... preço) e descrição embaixo */
+.menu-item{ display:flex; flex-direction:column; gap:4px; padding-block:12px; border-bottom:1px dashed var(--line-dark); }
+.menu-item-row{ display:flex; align-items:baseline; gap:8px; } /* nome, pontilhado e preço na mesma linha */
+.menu-item .name{ font-weight:700; min-width:0; } /* nome do prato */
+.menu-item .fill{ flex:1; min-width:12px; border-bottom:2px dotted var(--line-dark); transform:translateY(-5px); } /* pontilhado entre nome e preço */
+.menu-item .desc{ color:var(--cream-soft); font-size:.92rem; line-height:1.5; } /* descrição do prato */
+.price--ask{ font-weight:600; font-style:italic; opacity:.9; } /* "Consulte" (preço não informado) */
+
+/* Chamada de delivery no fim do cardápio */
+.menu-delivery{
+  margin-top:48px; padding:26px; border:1px solid var(--line-dark); border-radius:var(--radius);
+  background:var(--charcoal-2); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;
+}
+.menu-delivery strong{ display:block; margin-bottom:4px; font-family:var(--font-display); font-size:1.25rem; color:var(--cream); }
+.menu-delivery p{ color:var(--cream-soft); }
+
+/* ==========================================================================
+   [CSS-17] FAIXAS DE CHAMADA (CTA)
+   ========================================================================== */
+/* Faixa de chamada para ação (degradê tijolo → laranja) */
+.cta-band{
+  background:linear-gradient(120deg, var(--brick-deep), var(--brick) 60%, var(--ember));
+  padding-block:clamp(50px,8vh,80px); text-align:center; position:relative; overflow:hidden;
+}
+/* Título da faixa */
+.cta-band h2{ max-width:20ch; margin-inline:auto; }
+/* Texto da faixa */
+.cta-band p{ color:var(--cream-soft); max-width:52ch; margin:16px auto 30px; }
+/* Centraliza os botões da faixa */
+.cta-band .btn-row{ justify-content:center; }
+
+/* ==========================================================================
+   [CSS-18] DEPOIMENTOS
+   ========================================================================== */
+/* Grade dos depoimentos (1 coluna no celular) */
+.testi-grid{ display:grid; gap:22px; margin-top:44px; }
+/* Tela média: depoimentos em 3 colunas */
+@media (min-width:820px){ .testi-grid{ grid-template-columns:repeat(3,1fr); } }
+/* Cartão de um depoimento: coluna (nome e estrelas, texto, origem); todos os cartões da linha ficam da mesma altura */
+.testi{ display:flex; flex-direction:column; background:var(--charcoal-2); border:1px solid var(--line-dark); border-radius:var(--radius); padding:26px 26px 22px; transition:border-color .3s ease; }
+.testi:hover{ border-color:var(--gold); } /* borda dourada ao passar o mouse */
+/* Topo do cartão: nome da pessoa e, embaixo, as estrelas */
+.testi-head{ margin-bottom:14px; }
+/* Nome de quem escreveu o depoimento */
+.testi .testi-name{ font-weight:700; font-style:normal; font-size:1.05rem; color:var(--cream); margin-bottom:8px; }
+/* Linha das estrelas (a cor dourada vem daqui) */
+.stars{ display:flex; gap:3px; color:var(--gold); }
+/* Tamanho de cada estrela */
+.stars svg{ width:17px; height:17px; }
+/* Estrela apagada (avaliação com menos de 5 estrelas) */
+.stars .star-off{ opacity:.25; }
+/* Texto do depoimento (ocupa o espaço que sobra, para a origem ficar sempre no pé do cartão) */
+.testi .testi-text{ flex:1; color:var(--cream); line-height:1.65; font-style:italic; }
+/* Origem do depoimento ("Cliente Google") */
+.testi .testi-source{ margin-top:16px; padding-top:12px; border-top:1px solid var(--line-dark); font-style:normal; font-weight:700; font-size:.8rem; color:var(--gold); }
+
+/* ==========================================================================
+   [CSS-19] LOCALIZAÇÃO
+   ========================================================================== */
+/* Página Localização: informações e mapa */
+.loc-grid{ display:grid; gap:40px; }
+/* Telas largas: informações e mapa lado a lado */
+@media (min-width:900px){ .loc-grid{ grid-template-columns:1fr 1fr; align-items:start; } }
+/* Lista de informações (endereço, telefone, WhatsApp, horários) */
+.loc-list{ margin-top:26px; display:grid; gap:16px; }
+/* Uma informação: ícone + texto */
+.loc-item{ display:flex; gap:14px; align-items:flex-start; }
+/* Tamanho do ícone nas informações */
+.loc-item .badge{ margin-bottom:0; flex-shrink:0; width:42px; height:42px; border-radius:12px; }
+/* Tamanho do desenho dentro do ícone */
+.loc-item .badge svg{ width:20px; height:20px; }
+/* Rótulo da informação (ex.: "Endereço") */
+.loc-item strong{ display:block; margin-bottom:2px; }
+/* Texto da informação */
+.loc-item span{ color:var(--ink-soft); }
+/* Marca textos que ainda precisam ser preenchidos (destaque amarelo) */
+.placeholder{ background:rgba(227,164,33,.16); padding:1px 8px; border-radius:6px; color:var(--brick); font-weight:700; }
+/* Moldura do mapa */
+.map-frame{ border-radius:var(--radius); overflow:hidden; border:1px solid var(--line-light); min-height:340px; }
+/* Mapa do Google dentro da moldura */
+.map-frame iframe{ width:100%; height:100%; min-height:340px; border:0; filter:grayscale(.15) contrast(1.05); }
+
+/* ==========================================================================
+   [CSS-19B] HORÁRIOS COM ABRE E FECHA (página Localização)
+   ========================================================================== */
+/* Caixa dos horários: tira o visual de "cartão" que o <details> tem no FAQ e ocupa a largura toda */
+.loc-item details.hours{ flex:1; background:none; border:0; padding:0; border-radius:0; }
+/* Linha clicável: título à esquerda, ícone +/− à direita */
+.loc-item details.hours summary{ font-weight:400; font-size:1rem; }
+/* Título "Horários" + resumo "Aberto 24 horas" empilhados */
+.hours-title{ display:block; }
+/* Resumo em vermelho-tijolo, visível mesmo com a lista fechada */
+.loc-item .hours-now{ display:block; font-weight:600; color:var(--brick); }
+/* Lista dos 7 dias */
+.hours-list{ margin-top:12px; border-top:1px solid var(--line-light); }
+/* Cada dia: nome à esquerda e abre/fecha à direita */
+.hours-list li{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:9px 0; border-bottom:1px solid var(--line-light); }
+/* Nome do dia */
+.loc-item .hours-list .day{ color:var(--ink); font-weight:600; }
+/* Texto "Abre 00:00 · Fecha 23:59 (24 horas)" */
+.loc-item .hours-list .time{ color:var(--ink-soft); }
+.hours-list em{ font-style:normal; color:var(--brick); font-weight:600; }
+
+/* ==========================================================================
+   [CSS-20] DÚVIDAS FREQUENTES (FAQ)
+   ========================================================================== */
+/* Lista das perguntas frequentes */
+.faq-list{ margin-top:40px; display:grid; gap:14px; max-width:78ch; }
+/* Cada pergunta (bloco que abre e fecha) */
+details{ background:#fff; border:1px solid var(--line-light); border-radius:14px; padding:18px 22px; transition:border-color .2s ease; }
+/* Pergunta aberta ganha borda dourada */
+details[open]{ border-color:var(--gold); }
+/* Linha clicável da pergunta */
+summary{ cursor:pointer; font-weight:700; font-size:1.02rem; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+/* Esconde a setinha padrão do navegador */
+summary::-webkit-details-marker{ display:none; }
+/* Círculo do ícone + / − */
+summary .plus{ width:22px; height:22px; flex-shrink:0; border-radius:50%; border:2px solid var(--brick); position:relative; }
+/* Traços que formam o + (comum aos dois) */
+summary .plus::before, summary .plus::after{ content:""; position:absolute; background:var(--brick); border-radius:2px; }
+/* Traço horizontal do + */
+summary .plus::before{ width:10px; height:2px; top:50%; left:50%; transform:translate(-50%,-50%); }
+/* Traço vertical do + */
+summary .plus::after{ width:2px; height:10px; top:50%; left:50%; transform:translate(-50%,-50%); transition:opacity .2s ease; }
+/* Com a pergunta aberta o traço vertical some, virando − */
+details[open] summary .plus::after{ opacity:0; }
+/* Texto da resposta (cada parágrafo da resposta) */
+details p{ color:var(--ink-soft); margin-top:14px; line-height:1.65; }
+/* Links dentro das respostas: vermelho-tijolo e em negrito */
+.faq-list details a{ color:var(--brick); font-weight:700; text-decoration:underline; text-underline-offset:3px; }
+/* Número da pergunta (1., 2., ...) em dourado-escuro, ao lado do texto */
+.faq-list .q-num{ color:var(--brick); font-weight:800; margin-right:10px; flex-shrink:0; }
+/* Texto da pergunta ocupa o espaço restante, empurrando o + para a direita */
+.faq-list .q-text{ flex:1; }
+/* Fecho da página de dúvidas */
+.faq-closing{ margin-top:48px; max-width:78ch; padding:28px; border-radius:var(--radius); background:#fff; border:1px solid var(--line-light); }
+/* Título do fecho */
+.faq-closing h2{ font-size:clamp(1.3rem,3.6vw,1.7rem); }
+/* Texto do fecho */
+.faq-closing p{ color:var(--ink-soft); margin:12px 0 20px; line-height:1.65; }
+
+/* ==========================================================================
+   [CSS-21] RODAPÉ
+   ========================================================================== */
+/* Rodapé do site */
+footer{ background:var(--charcoal); border-top:1px solid var(--line-dark); padding-block:52px 26px; }
+/* Parte de cima do rodapé: marca + colunas */
+.foot-top{ display:grid; gap:32px; }
+/* Tela média: rodapé em 4 colunas */
+@media (min-width:820px){ .foot-top{ grid-template-columns:1.4fr 1fr 1fr 1fr; } }
+/* Textos da marca no rodapé */
+.foot-brand p{ color:var(--cream-soft); margin-top:12px; max-width:32ch; }
+/* Título de cada coluna do rodapé */
+.foot-col h4{ font-size:.85rem; letter-spacing:.02em; color:var(--gold); margin-bottom:14px; }
+/* Lista de itens da coluna */
+.foot-col ul{ display:grid; gap:10px; }
+/* Links e textos das colunas */
+.foot-col a, .foot-col span{ color:var(--cream-soft); font-size:.94rem; }
+/* Link do rodapé clareia ao passar o mouse */
+.foot-col a:hover{ color:var(--cream); }
+/* Linha final do rodapé (direitos reservados) */
+.foot-bottom{
+  margin-top:40px; padding-top:20px; border-top:1px solid var(--line-dark);
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:space-between; color:var(--cream-soft); font-size:.82rem;
+}
+
+/* ==========================================================================
+   [CSS-22] BOTÃO FLUTUANTE DO WHATSAPP
+   ========================================================================== */
+/* Botão redondo do WhatsApp que fica fixo no canto da tela (celular/tablet) */
+.whats-float{
+  position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom)); z-index:60;
+  width:60px; height:60px; border-radius:50%; background:#1f7a52; color:#eafff2;
+  display:flex; align-items:center; justify-content:center; box-shadow:0 14px 30px -8px rgba(0,0,0,.5);
+}
+/* Tamanho do ícone do botão flutuante */
+.whats-float svg{ width:28px; height:28px; }
+/* Anel que pulsa em volta do botão */
+.whats-float::before{
+  content:""; position:absolute; inset:-6px; border-radius:50%; border:2px solid rgba(31,122,82,.6);
+  animation:pulse 2.4s ease-out infinite;
+}
+/* Animação do anel pulsando */
+@keyframes pulse{ 0%{ transform:scale(.85); opacity:.9; } 100%{ transform:scale(1.5); opacity:0; } }
+/* DESKTOP: esconde o botão flutuante (o menu lateral já tem o botão de WhatsApp). Esta regra precisa ficar DEPOIS de .whats-float para valer */
+@media (min-width:1024px){ .whats-float{ display:none; } }
+
+/* ==========================================================================
+   [CSS-23] DETALHES GERAIS
+   Seleção de texto e foco do teclado.
+   ========================================================================== */
+/* Cor do texto quando a pessoa seleciona com o mouse */
+::selection{ background:var(--gold); color:var(--charcoal); }
+/* Contorno dourado ao navegar pelo teclado (acessibilidade) */
+:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+
+/* ==========================================================================
+   [CSS-24] SEM JAVASCRIPT
+   O conteúdo principal está no HTML de cada página. Estas regras garantem que
+   menu e cardápio continuem acessíveis mesmo se o JavaScript falhar.
+   (o <noscript> de cada página só carrega o que está abaixo quando o JS está desligado)
+   ========================================================================== */
+/* Sem JS no celular/tablet: o menu deixa de ser gaveta e vira um bloco de links no topo da página */
+@media (max-width:1023.98px){
+  .no-js-fallback .topbar, .no-js-fallback .sidebar-overlay, .no-js-fallback .sidebar-close{ display:none; }
+  .no-js-fallback .sidebar{ position:static; transform:none; width:auto; height:auto; padding-bottom:18px; }
+  .no-js-fallback main.page{ padding-top:0; }
+}
+/* Sem JS: todos os painéis do cardápio aparecem um embaixo do outro e a faixa de abas some */
+.no-js-fallback .menu-panel[hidden]{ display:block; }
+.no-js-fallback .menu-tabs-wrap{ display:none; }
+
+/* ==========================================================================
+   [CSS-25] IMAGENS (arquivos na pasta assets/img/)
+   Os caminhos são relativos a este arquivo (assets/css/). Para trocar uma foto,
+   substitua o arquivo em assets/img/ mantendo o mesmo nome.
+     [IMG-01] banner.jpg ... foto de fundo do banner (página inicial "/")
+     [IMG-02] salao.jpg .... foto do salão (página /sobre/, seção "A experiência")
+   ========================================================================== */
+/* [IMG-01] foto de fundo do banner; usada em .hero ([CSS-11]) */
+.hero{ --img-hero: url("../img/banner.jpg"); }
+/* [IMG-02] foto do salão; usada em .moments-visual ([CSS-13]) */
+.moments-visual{ --img-sobre: url("../img/salao.jpg"); }
+
