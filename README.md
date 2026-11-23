@@ -23,7 +23,7 @@ index.html, sobre/, delicias/, cardapio/, hospedagem/, depoimentos/, localizacao
 assets/css/style.css     estilos de todas as páginas ([CSS-01..25])
 assets/js/main.js        menu, barra de progresso, animações, abas do cardápio ([JS-01..05])
 assets/img/              fotos (banner, salão), logo, imagem de compartilhamento (og-...) e favicon-192.png
-favicon.ico, apple-touch-icon.png   ícone do site (a partir da logo)
+favicon.ico, apple-touch-icon.png, site.webmanifest   ícone do site e da tela inicial do celular (a partir da logo)
 404.html                 página de erro
 sitemap.xml, robots.txt  indexação no Google
 vercel.json              configuração da Vercel (cleanUrls + trailingSlash)

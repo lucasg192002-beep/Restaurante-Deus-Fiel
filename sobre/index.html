@@ -44,10 +44,13 @@
 <meta name="twitter:title" content="Sobre o Restaurante e Hotel Deus é Fiel | Caetés - PE">
 <meta name="twitter:description" content="Conheça o Restaurante e Hotel Deus é Fiel, em Caetés - PE: restaurante e hospedagem no mesmo lugar, no Agreste de Pernambuco.">
 <meta name="twitter:image" content="https://restaurante-deus-fiel.vercel.app/assets/img/og-restaurante-e-hotel-deus-e-fiel.jpg">
-<!-- Ícone do site (favicon) nas abas do navegador, no Google e na tela inicial do celular. Arquivos: favicon.ico e apple-touch-icon.png na raiz; favicon-192.png em assets/img/. -->
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Ícone do site (favicon): aba do navegador, Google e tela inicial do celular. O "?v=2" força o navegador a baixar o ícone novo (aumente o número ao trocar a imagem).
+     favicon.ico, favicon-32.png e favicon-192.png = recorte do chef; apple-touch-icon.png (iPhone) e icon-192/512.png (Android, via site.webmanifest) = logo completa. -->
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
+<link rel="manifest" href="/site.webmanifest?v=2">
 <!-- Avisa ao CSS que o JavaScript está ativo (troca "no-js-fallback" por "js"). Sem JS, o conteúdo aparece normalmente. -->
 <script>document.documentElement.className='js';</script>
 <!-- Acelera o carregamento das fontes do Google (as duas linhas abaixo). -->
@@ -139,23 +142,34 @@
 </section>
 
 <!-- [PAG-2.2] TEXTO INSTITUCIONAL APROVADO (fundo claro). TEXTO PROTEGIDO: NÃO REESCREVER, RESUMIR, CORRIGIR NEM TROCAR PALAVRAS.
-     Só a estrutura HTML pode mudar. A chamada final em negrito é o último parágrafo. Os links de navegação ficam FORA do texto, logo abaixo. -->
-<section class="section--light section-pad" id="sobre-texto">
-  <div class="container about-grid">
-    <div class="about-text reveal">
-      <p>Se você está procurando um restaurante em Caetés, Pernambuco, que reúna boa comida, atendimento acolhedor e praticidade, venha conhecer o Restaurante e Hotel Deus é Fiel!</p>
-      <p>Localizado na Rua Dom José Adélino Dantas, em Caetés – PE, somos um estabelecimento que une restaurante e hospedagem em um só lugar, oferecendo uma opção prática para moradores da cidade, visitantes e viajantes que passam pela região.</p>
-      <p>Nossa proposta é proporcionar boas experiências em diferentes momentos do dia. No restaurante, você encontra opções para o café da manhã, almoço e jantar, além de pizzas e outras alternativas para tornar sua refeição ainda mais especial. Para quem aprecia uma boa comida caseira, buscamos unir sabor, qualidade e aquele cuidado que faz a diferença à mesa.</p>
-      <p>Além da experiência gastronômica, o Deus é Fiel também oferece hospedagem para quem precisa descansar e encontrar um lugar acolhedor durante sua passagem por Caetés. Seja em uma viagem a trabalho, em uma visita à família ou em um passeio pela região, nossa estrutura reúne praticidade e comodidade em um só endereço.</p>
-      <p>Nosso compromisso é receber cada cliente com atenção, dedicação e respeito, valorizando os detalhes que tornam uma visita especial. Acreditamos que uma boa experiência começa no atendimento e continua na qualidade daquilo que oferecemos.</p>
-      <p>Seja para fazer uma refeição, aproveitar uma pizza ou encontrar um lugar para se hospedar em Caetés, o Restaurante e Hotel Deus é Fiel está pronto para receber você.</p>
-      <p><strong>Conheça nosso cardápio, descubra nossas opções de hospedagem e venha viver essa experiência em Caetés, no Agreste de Pernambuco. Será um prazer receber você!</strong></p>
+     Só a apresentação muda: o texto fica idêntico; os trechos em <mark> são apenas destaque visual (para mudar o destaque, mova o <mark> sem alterar nenhuma palavra).
+     Ordem dos parágrafos (não mude): 1 abertura grande · 2, 3 e 4 em cartões · 5 citação · 6 fecho · chamada final em negrito no painel vermelho. -->
+<section class="section--light section-pad sobre-story" id="sobre-texto">
+  <div class="container">
+    <!-- Parágrafo 1: abertura em tamanho grande -->
+    <p class="sobre-lead reveal">Se você está procurando um restaurante em Caetés, Pernambuco, que reúna <mark>boa comida, atendimento acolhedor e praticidade</mark>, venha conhecer o Restaurante e Hotel Deus é Fiel!</p>
+    <!-- Selos visuais (apenas decoração/resumo; não fazem parte do texto aprovado) -->
+    <ul class="sobre-chips reveal" aria-label="Resumo">
+      <li>Café da manhã</li><li>Almoço</li><li>Jantar</li><li>Pizzas</li><li>Hospedagem</li><li>Aberto 24 horas</li>
+    </ul>
+    <!-- Parágrafos 2, 3 e 4: um cartão com ícone para cada -->
+    <div class="sobre-trio">
+      <div class="sobre-block reveal"><span class="sobre-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><p>Localizado na Rua Dom José Adélino Dantas, em Caetés – PE, somos um estabelecimento que une <mark>restaurante e hospedagem em um só lugar</mark>, oferecendo uma opção prática para moradores da cidade, visitantes e viajantes que passam pela região.</p></div>
+      <div class="sobre-block reveal" style="transition-delay:.12s;"><span class="sobre-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v7a3 3 0 0 0 6 0V3"/><path d="M9 10v11"/><path d="M17 3c-1.5 2-1.5 6 0 8s1.5 6 0 8"/></svg></span><p>Nossa proposta é proporcionar boas experiências em diferentes momentos do dia. No restaurante, você encontra opções para o <mark>café da manhã, almoço e jantar</mark>, além de <mark>pizzas</mark> e outras alternativas para tornar sua refeição ainda mais especial. Para quem aprecia uma boa comida caseira, buscamos unir <mark>sabor, qualidade e aquele cuidado</mark> que faz a diferença à mesa.</p></div>
+      <div class="sobre-block reveal" style="transition-delay:.24s;"><span class="sobre-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V7"/><path d="M3 14h18v4"/><path d="M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.6"/></svg></span><p>Além da experiência gastronômica, o Deus é Fiel também <mark>oferece hospedagem</mark> para quem precisa descansar e encontrar um lugar acolhedor durante sua passagem por Caetés. Seja em uma viagem a trabalho, em uma visita à família ou em um passeio pela região, nossa estrutura reúne <mark>praticidade e comodidade em um só endereço</mark>.</p></div>
     </div>
-    <!-- Links para as páginas relacionadas (fora do texto aprovado) -->
-    <div class="btn-row reveal" style="margin-top:8px;">
-      <a href="/cardapio/" class="btn btn--primary">Ver cardápio</a>
-      <a href="/hospedagem/" class="btn btn--ghost on-light">Conhecer a hospedagem</a>
-      <a href="/localizacao/" class="btn btn--ghost on-light">Como chegar</a>
+    <!-- Parágrafo 5: em destaque, como citação -->
+    <p class="sobre-quote reveal">Nosso compromisso é receber cada cliente com <mark>atenção, dedicação e respeito</mark>, valorizando os detalhes que tornam uma visita especial. Acreditamos que uma boa experiência começa no atendimento e continua na qualidade daquilo que oferecemos.</p>
+    <!-- Parágrafo 6 -->
+    <p class="sobre-close reveal">Seja para fazer uma refeição, aproveitar uma pizza ou encontrar um lugar para se hospedar em Caetés, o Restaurante e Hotel Deus é Fiel <mark>está pronto para receber você</mark>.</p>
+    <!-- Chamada final em negrito, em painel de destaque, com os links para as outras páginas (fora do texto aprovado) -->
+    <div class="sobre-final reveal">
+      <p><strong>Conheça nosso cardápio, descubra nossas opções de hospedagem e venha viver essa experiência em Caetés, no Agreste de Pernambuco. Será um prazer receber você!</strong></p>
+      <div class="btn-row">
+        <a href="/cardapio/" class="btn btn--primary">Ver cardápio</a>
+        <a href="/hospedagem/" class="btn btn--ghost">Conhecer a hospedagem</a>
+        <a href="/localizacao/" class="btn btn--ghost">Como chegar</a>
+      </div>
     </div>
   </div>
 </section>
