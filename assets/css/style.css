@@ -351,6 +351,8 @@ main.page{ padding-top:var(--topbar-h); min-height:60vh; }
 }
 /* Mantém o conteúdo acima da textura de tijolos */
 .page-hero .container{ position:relative; }
+/* Parte do título que vai para a linha de baixo (ex.: "Dúvidas Frequentes" / "Restaurante Deus é Fiel"), sem sinal entre as duas */
+.page-hero h1 .h1-sub{ display:block; }
 /* Tamanho do título das páginas internas */
 .page-hero h1{ margin-top:10px; font-size:clamp(2rem, 5.4vw, 3rem); }
 /* Subtítulo das páginas internas */
