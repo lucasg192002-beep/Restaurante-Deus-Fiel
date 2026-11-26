@@ -756,10 +756,8 @@ footer{ background:var(--charcoal); border-top:1px solid var(--line-dark); paddi
 .sobre-block{ background:#fff; border:1px solid var(--line-light); border-top:4px solid var(--ember); border-radius:var(--radius); padding:26px 24px; transition:box-shadow .3s ease, border-color .3s ease, opacity .7s ease, transform .7s ease; }
 /* Cartão ganha sombra ao passar o mouse */
 .sobre-block:hover{ box-shadow:var(--shadow); border-color:var(--gold); }
-/* Quadradinho do ícone */
-.sobre-ico{ width:48px; height:48px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg, var(--ember-2), var(--brick)); color:var(--cream); margin-bottom:16px; }
-/* Tamanho do desenho do ícone */
-.sobre-ico svg{ width:24px; height:24px; }
+/* Título do cartão (Localização, Experiência, Hospedagem): fonte dos títulos, com filete embaixo */
+.sobre-label{ font-size:1.45rem; color:var(--brick); margin:0 0 14px; padding-bottom:12px; border-bottom:1px solid var(--line-light); }
 /* Texto dentro do cartão */
 .sobre-block p{ color:var(--ink-soft); line-height:1.7; margin:0; }
 /* Cor do destaque dentro do cartão */
