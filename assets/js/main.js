@@ -3,7 +3,7 @@
 // Arquivo compartilhado por todas as páginas. A navegação entre páginas NÃO depende
 // dele: cada página é um arquivo .html com link normal. Aqui ficam só os extras.
 //   [JS-01] Menu lateral (celular)   [JS-02] Barra de progresso   [JS-03] Animação de entrada
-//   [JS-04] Brilho do banner (só na página inicial)   [JS-05] Abas do cardápio (só em /cardapio/)
+//   [JS-05] Abas do cardápio (só em /cardapio/)   [JS-06] Cartões da página Sobre (passam na horizontal)
 // Padrão: todo bloco novo ganha um cabeçalho [JS-NN] e cada instrução um comentário.
 // =============================================================================
 
@@ -61,22 +61,6 @@ const io = new IntersectionObserver((entries) => {
 revealEls.forEach(el => io.observe(el)); // começa a observar cada elemento
 
 
-// ===== [JS-04] BRILHO QUENTE QUE SEGUE O MOUSE NO BANNER (só existe na página inicial "/") =====
-const heroSection = document.getElementById('banner');  // o banner
-const heroGlow = document.getElementById('heroGlow');   // a camada de brilho
-if (heroSection && heroGlow){
-  heroSection.addEventListener('mousemove', (e) => {
-    // posição do mouse em % dentro do banner...
-    const rect = heroSection.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    // ...entregue ao CSS ([CSS-11], .hero-glow) pelas variáveis --mx e --my
-    heroGlow.style.setProperty('--mx', x + '%');
-    heroGlow.style.setProperty('--my', y + '%');
-  });
-}
-
-
 // ===== [JS-05] ABAS DO CARDÁPIO =============================================
 // Cada botão .menu-tab aponta (aria-controls) para o id de um painel .menu-panel.
 // Clicar numa aba mostra o painel dela e esconde os outros. Não precisa mexer aqui
@@ -124,3 +108,41 @@ if (heroSection && heroGlow){
     if (next){ e.preventDefault(); selectTab(next, true); }
   });
 })();
+
+
+// ===== [JS-06] CARTÕES DA PÁGINA SOBRE: passam na horizontal, um por um ======
+// O trilho (.sobre-trio) já rola com o dedo/mouse sem JavaScript; aqui só se acrescenta o avanço automático e as setas.
+const trilho = document.querySelector('[data-slider]');
+if (trilho){
+  const cartoes = trilho.querySelectorAll('.sobre-block');
+  const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches; // quem pediu menos movimento não tem avanço automático
+  let pausado = false, naTela = true, timer = null;
+  // largura de um passo = largura do cartão + espaço entre cartões
+  const passo = () => cartoes[0].getBoundingClientRect().width + parseFloat(getComputedStyle(trilho).columnGap || 20);
+  // vai para o próximo cartão (dir = 1) ou o anterior (dir = -1); no fim volta ao começo
+  const ir = (dir) => {
+    const fim = trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 4;
+    if (dir > 0 && fim) trilho.scrollTo({ left:0, behavior:'smooth' });
+    else if (dir < 0 && trilho.scrollLeft <= 4) trilho.scrollTo({ left:trilho.scrollWidth, behavior:'smooth' });
+    else trilho.scrollBy({ left:dir * passo(), behavior:'smooth' });
+  };
+  // setas (só existem com JavaScript)
+  const setas = document.createElement('div');
+  setas.className = 'sobre-setas';
+  setas.innerHTML = '<button type="button" aria-label="Cartão anterior">&#8249;</button><button type="button" aria-label="Próximo cartão">&#8250;</button>';
+  trilho.insertAdjacentElement('afterend', setas);
+  setas.children[0].addEventListener('click', () => ir(-1));
+  setas.children[1].addEventListener('click', () => ir(1));
+  // avanço automático a cada 6 segundos
+  if (!reduz){
+    timer = setInterval(() => { if (!pausado && naTela && !document.hidden) ir(1); }, 6000);
+  }
+  // pausa enquanto a pessoa lê (mouse em cima, toque ou foco no teclado)
+  ['mouseenter','touchstart','focusin','pointerdown'].forEach(ev => trilho.addEventListener(ev, () => { pausado = true; }, { passive:true }));
+  ['mouseleave','focusout'].forEach(ev => trilho.addEventListener(ev, () => { pausado = false; }));
+  trilho.addEventListener('touchend', () => { setTimeout(() => { pausado = false; }, 8000); }, { passive:true });
+  // só avança quando o trilho está visível na tela
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver((e) => { naTela = e[0].isIntersecting; }, { threshold:.3 }).observe(trilho);
+  }
+}
